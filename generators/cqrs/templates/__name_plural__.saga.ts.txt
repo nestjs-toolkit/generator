@@ -6,8 +6,8 @@ import {
   <%= namePascal %>CreatedEvent,
   <%= namePascal %>DeletedEvent,
   <%= namePascal %>UpdatedEvent,
-} from './events/index';
-import { <%= namePascal %>PublishCommand } from './commands/index';
+} from './events';
+import { <%= namePascal %>PublishCommand } from './commands';
 import { ActionsEnum } from '../../graphql';
 import { <%= namePascal %> } from './schemas';
 

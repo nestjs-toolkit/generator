@@ -1,17 +1,13 @@
 import {
   <%= namePascal %>CreateInput,
   <%= namePascal %>FilterInput,
-  <%= namePascal %>SearchInput,
-  <%= namePascal %>SortFieldEnum,
+  <%= namePascal %>SearchInput,  
   <%= namePascal %>UpdateInput,
-  SortOrderEnum,
 } from '../../../graphql';
 
 export class <%= namePascal %>SearchDto implements <%= namePascal %>SearchInput {
   readonly page?: number;
   readonly perPage?: number;
-  readonly sortField?: <%= namePascal %>SortFieldEnum;
-  readonly sortOrder?: SortOrderEnum;
   readonly filter?: <%= namePascal %>FilterInput;
 }
 
@@ -20,5 +16,5 @@ export class <%= namePascal %>CreateDto implements <%= namePascal %>CreateInput 
 }
 
 export class <%= namePascal %>UpdateDto implements <%= namePascal %>UpdateInput {
-  readonly name: string;
+  readonly name?: string;
 }

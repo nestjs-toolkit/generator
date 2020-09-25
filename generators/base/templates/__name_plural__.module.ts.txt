@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CqrsModule } from '@nestjs/cqrs';
-import { <%= namePluralPascal %>Resolver } from './<%= namePlural %>.resolver.ts';
-import { <%= namePluralPascal %>Repository } from './<%= namePlural %>.repository.ts';
+import { <%= namePluralPascal %>Resolver } from './<%= namePlural %>.resolver';
+import { <%= namePluralPascal %>Repository } from './<%= namePlural %>.repository';
 import { RootDatabaseModule } from '../../database';
 import { <%= namePascal %>, <%= namePascal %>Schema } from './schemas';
 import { <%= namePluralPascal %>Saga } from './<%= namePlural %>.saga';
