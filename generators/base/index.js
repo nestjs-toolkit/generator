@@ -57,7 +57,7 @@ module.exports = class extends Generator {
     this.log(
       yosay(
         `Import your module ${chalk.red(
-          `${this.variables.name}.module.ts in AppModule `
+          `${this.variables.namePascal}.module.ts in AppModule `
         )}`
       )
     );
