@@ -1,0 +1,1 @@
+export { <%= namePascal %>PublishCommand } from './<%= name %>-publish.command';

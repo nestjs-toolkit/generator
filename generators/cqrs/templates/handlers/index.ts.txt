@@ -1,0 +1,1 @@
+export { <%= namePascal %>PublishHandler } from './<%= name %>-publish.handler';

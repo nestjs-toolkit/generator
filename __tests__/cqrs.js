@@ -3,10 +3,10 @@ const path = require("path");
 const assert = require("yeoman-assert");
 const helpers = require("yeoman-test");
 
-describe("generator-nestjs-gen:app", () => {
+describe("generator-nestjs-gen:cqrs", () => {
   beforeAll(() => {
     return helpers
-      .run(path.join(__dirname, "../generators/app"))
+      .run(path.join(__dirname, "../generators/cqrs"))
       .withPrompts({ someAnswer: true });
   });
 

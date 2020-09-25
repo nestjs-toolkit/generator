@@ -1,0 +1,19 @@
+import { OnModelChangedEvent } from '@nestjs-toolkit/winston-logger/dist/types';
+import { <%= namePascal %> } from '../schemas';
+import { Request, User } from '../../../types';
+
+export class <%= namePascal %>CreatedEvent implements OnModelChangedEvent {
+  readonly collection = '<%= namePlural %>';
+  readonly action = '<%= name %>.created';
+  readonly tags = ['<%= namePlural %>'];
+
+  constructor(
+    public readonly model: <%= namePascal %>,
+    public readonly req?: Request,
+    public readonly user?: User,
+  ) {
+    if (!user && req) {
+      this.user = req.user;
+    }
+  }
+}

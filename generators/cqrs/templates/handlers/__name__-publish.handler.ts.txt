@@ -1,0 +1,19 @@
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+
+import { <%= namePascal %>PublishCommand } from '../commands/index';
+import { <%= nameUp %>_ON_CHANGES } from '../<%= namePlural %>.constants';
+import { PubSubService } from '../../../graphql';
+
+@CommandHandler(<%= namePascal %>PublishCommand)
+export class <%= namePascal %>PublishHandler
+  implements ICommandHandler<<%= namePascal %>PublishCommand> {
+  constructor(private readonly pubSub: PubSubService) {}
+
+  execute({ model, action }: <%= namePascal %>PublishCommand): Promise<any> {
+    return this.pubSub.publish(<%= nameUp %>_ON_CHANGES, {
+      id: model._id,
+      action,
+      data: model.toJSON(),
+    });
+  }
+}

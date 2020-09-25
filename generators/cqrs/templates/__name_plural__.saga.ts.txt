@@ -1,0 +1,33 @@
+import { Injectable } from '@nestjs/common';
+import { ICommand, ofType, Saga } from '@nestjs/cqrs';
+import { merge, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import {
+  <%= namePascal %>CreatedEvent,
+  <%= namePascal %>DeletedEvent,
+  <%= namePascal %>UpdatedEvent,
+} from './events/index';
+import { <%= namePascal %>PublishCommand } from './commands/index';
+import { ActionsEnum } from '../../graphql';
+import { <%= namePascal %> } from './schemas';
+
+@Injectable()
+export class CategoriesSaga {
+  @Saga()
+  onChanges = (events$: Observable<any>): Observable<ICommand> => {
+    return merge<[<%= namePascal %>, ActionsEnum]>(
+      events$.pipe(
+        ofType(<%= namePascal %>CreatedEvent),
+        map(event => [event.model, ActionsEnum.CREATED]),
+      ),
+      events$.pipe(
+        ofType(<%= namePascal %>UpdatedEvent),
+        map(event => [event.model, ActionsEnum.UPDATED]),
+      ),
+      events$.pipe(
+        ofType(<%= namePascal %>DeletedEvent),
+        map(event => [event.model, ActionsEnum.DELETED]),
+      ),
+    ).pipe(map(args => new <%= namePascal %>PublishCommand(...args)));
+  };
+}
