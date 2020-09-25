@@ -12,7 +12,7 @@ import { ActionsEnum } from '../../graphql';
 import { <%= namePascal %> } from './schemas';
 
 @Injectable()
-export class CategoriesSaga {
+export class <%= namePluralPascal %>Saga {
   @Saga()
   onChanges = (events$: Observable<any>): Observable<ICommand> => {
     return merge<[<%= namePascal %>, ActionsEnum]>(

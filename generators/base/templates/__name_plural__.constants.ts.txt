@@ -1,0 +1,1 @@
+export const <%= nameUp %>_ON_CHANGES = '<%= namePascal %>OnChanges';

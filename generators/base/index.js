@@ -4,10 +4,9 @@ const Generator = require("yeoman-generator");
 const path = require("path");
 const chalk = require("chalk");
 const yosay = require("yosay");
-const boxen = require("boxen");
 
-const { makeFileTemplate } = require("../../utils/get-files");
 const { buildVariables } = require("../../utils/build");
+const { makeFileTemplate } = require("../../utils/get-files");
 
 module.exports = class extends Generator {
   constructor(args, opts) {
@@ -30,7 +29,9 @@ module.exports = class extends Generator {
 
   Prompting() {
     this.log(
-      yosay(`Welcome to the stellar ${chalk.red("nestjs-gen")} CQRS generator!`)
+      yosay(
+        `Welcome to the stellar ${chalk.red("nestjs-gen")}  BASE generator!`
+      )
     );
 
     this.variables = buildVariables({
@@ -55,26 +56,9 @@ module.exports = class extends Generator {
   Install() {
     this.log(
       yosay(
-        `Update your module ${chalk.red(`${this.variables.name}.module.ts`)}`
-      )
-    );
-
-    this.log(
-      boxen(
-        `
-      @Module({
-        imports: [
-          ...
-          CqrsModule,
-        ],
-        providers: [
-          ...
-          ${this.variables.namePluralPascal}Saga,
-          ${this.variables.namePascal}PublishHandler,
-        ],
-      })
-    `,
-        { padding: 1, margin: 2 }
+        `Import your module ${chalk.red(
+          `${this.variables.name}.module.ts in AppModule `
+        )}`
       )
     );
   }

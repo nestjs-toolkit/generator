@@ -1,0 +1,149 @@
+import { Injectable } from '@nestjs/common';
+import {
+  AbstractRepository,
+  MaybeModelWithOld,
+} from '@lib/commons/repositories';
+import { InjectModel } from '@nestjs/mongoose';
+import { FilterQuery, Model } from 'mongoose';
+import { WinstonLogger } from '@nestjs-toolkit/winston-logger';
+import { ModelNotFoundException } from '@lib/base/exceptions/graphql';
+import { EventBus } from '@nestjs/cqrs';
+import { <%= namePascal %> } from './schemas';
+import { <%= namePascal %>SearchInput } from '../../graphql';
+import { <%= namePascal %>CreateDto, <%= namePascal %>UpdateDto } from './dto';
+import {
+  <%= namePascal %>CreatedEvent,
+  <%= namePascal %>DeletedEvent,
+  <%= namePascal %>UpdatedEvent,
+} from './events';
+import { Request } from '../../types';
+
+@Injectable()
+export class <%= namePluralPascal %>Repository extends AbstractRepository<<%= namePascal %>> {
+  constructor(
+    private readonly eventBus: EventBus,
+    private readonly logger: WinstonLogger,
+    @InjectModel(<%= namePascal %>.name) <%= name %>Model: Model<<%= namePascal %>>,
+  ) {
+    super(<%= name %>Model);
+  }
+
+  protected createQueryObject<T = <%= namePascal %>>(
+    initial?: FilterQuery<T>,
+  ): FilterQuery<T> {
+    return Object.assign({}, initial);
+  }
+
+  async search(
+    params: <%= namePascal %>SearchInput,
+    projection: any = null,
+  ): Promise<any> {
+    const { page, perPage } = Object.assign({ page: 1, perPage: 12 }, params);
+    const conditions = this.createQueryObject(params?.filter);
+
+    const models = await this.model
+      .find(conditions, projection)
+      .limit(perPage)
+      .skip((page - 1) * perPage)
+      .sort(params?.sort || { name: 1 })
+      .exec();
+
+    const total = await this.model.countDocuments(conditions).exec();
+
+    return {
+      edges: models,
+      pagination: {
+        total,
+        page,
+        perPage,
+        lastPage: Math.floor(total / perPage),
+      },
+    };
+  }
+
+  async find(_id: string): Promise<<%= namePascal %> | null> {
+    const conditions = this.createQueryObject({ _id });
+    return this.model.findOne(conditions).exec();
+  }
+
+  async findOrFail(_id: string): Promise<<%= namePascal %>> {
+    const <%= name %> = await this.find(_id);
+
+    if (!<%= name %>) {
+      throw new ModelNotFoundException();
+    }
+
+    return <%= name %>;
+  }
+
+  async create(dto: <%= namePascal %>CreateDto, req?: Request): Promise<<%= namePascal %>> {
+    const <%= name %> = new this.model(dto);
+    await <%= name %>.save();
+
+    const event = new <%= namePascal %>CreatedEvent(<%= name %>, req);
+
+    this.logger
+      .activity()
+      .withEvent(event)
+      .withProperty('dto', dto)
+      .contextIn(<%= namePluralPascal %>Repository.name)
+      .log('create <%= name %>: :subject.name');
+
+    this.eventBus.publish(event);
+
+    return <%= name %>;
+  }
+
+  async update(
+    model: <%= namePascal %>,
+    dto: <%= namePascal %>UpdateDto,
+  ): Promise<MaybeModelWithOld<<%= namePascal %>>> {
+    return this.updateByID(model._id, dto);
+  }
+
+  async updateByID(
+    _id: string,
+    dto: <%= namePascal %>UpdateDto,
+    req?: Request,
+  ): Promise<MaybeModelWithOld<<%= namePascal %>>> {
+    const conditions = this.createQueryObject({ _id });
+    const result = await this.updateOne(conditions, dto);
+
+    if (!result.model) {
+      throw new ModelNotFoundException();
+    }
+
+    const event = new <%= namePascal %>UpdatedEvent(result.model, result.old, req);
+
+    this.logger
+      .activity()
+      .withEvent(event)
+      .withProperty('dto', dto)
+      .contextIn(<%= namePluralPascal %>Repository.name)
+      .log('update <%= name %>: :subject.name');
+
+    this.eventBus.publish(event);
+
+    return result;
+  }
+
+  async deleteByID(_id: string, req?: Request): Promise<boolean> {
+    const <%= name %> = await this.findOrFail(_id);
+
+    const { deletedCount } = await this.model.deleteOne({ _id });
+
+    if (deletedCount) {
+      const event = new <%= namePascal %>DeletedEvent(<%= name %>, req);
+
+      this.logger
+        .activity()
+        .withEvent(event)
+        .contextIn(<%= namePluralPascal %>Repository.name)
+        .log('delete <%= name %>: :subject.name');
+
+      this.eventBus.publish(event);
+    }
+
+    return true;
+  }
+}

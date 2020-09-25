@@ -1,3 +1,5 @@
+"use strict";
+
 const { resolve } = require("path");
 const { readdir } = require("fs").promises;
 const pluralize = require("pluralize");

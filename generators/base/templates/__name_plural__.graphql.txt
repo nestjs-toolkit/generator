@@ -1,0 +1,66 @@
+enum <%= namePascal %>SortFieldEnum {
+    name
+}
+
+input <%= namePascal %>SortInput {
+    name: Int
+}
+
+input <%= namePascal %>FilterInput {
+    q: String
+    id: ID
+    name: String
+}
+
+input <%= namePascal %>SearchInput {
+    page: Int
+    perPage: Int
+    sort: <%= namePascal %>SortInput
+    filter: <%= namePascal %>FilterInput
+}
+
+input <%= namePascal %>CreateInput {
+    name: String!
+}
+
+input <%= namePascal %>UpdateInput {
+    name: String
+}
+
+type <%= namePascal %> {
+    _id: ID!
+    name: String!
+    createdAt: CustomDate!
+    updatedAt: CustomDate!
+}
+
+type <%= namePascal %>Edge {
+    edges: [<%= namePascal %>]!
+    pagination: Pagination
+}
+
+type <%= namePascal %>Response {
+    message: String
+    data: <%= namePascal %>!
+}
+
+type <%= namePascal %>OnChange {
+    id: ID!
+    action: ActionsEnum!
+    data: <%= namePascal %>!
+}
+
+type Query {
+    <%= name %>(id: ID!): <%= namePascal %>
+    <%= namePlural %>(params: <%= namePascal %>SearchInput): <%= namePascal %>Edge!
+}
+
+type Mutation {
+    create<%= namePascal %>(input: <%= namePascal %>CreateInput!): <%= namePascal %>Response!
+    update<%= namePascal %>(id: ID!, input: <%= namePascal %>UpdateInput!): <%= namePascal %>Response!
+    delete<%= namePascal %>(id: ID!): SimpleResponse!
+}
+
+type Subscription {
+    <%= name %>OnChanges: <%= namePascal %>OnChange!
+}
