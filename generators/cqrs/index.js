@@ -19,6 +19,14 @@ module.exports = class extends Generator {
       description: "domain name single"
     });
 
+    this.option("dryRun", {
+      alias: "d",
+      type: Boolean,
+      required: false,
+      default: false,
+      description: "sandbox"
+    });
+
     this.option("path", {
       alias: "p",
       type: String,
@@ -35,24 +43,35 @@ module.exports = class extends Generator {
 
     this.variables = buildVariables({
       name: this.options.name,
-      path:
-        this.options.path === "." ? `./${this.options.name}` : this.options.path
+      basePath: this.options.path
     });
   }
 
   async writing() {
     const dir = path.join(__dirname, "templates/");
 
+    if (this.options.dryRun) {
+      this.log(`IN ${chalk.red("dry-run")} CQRS!`);
+    }
+
     for await (const f of makeFileTemplate(dir, this.variables.name)) {
-      this.fs.copyTpl(
-        this.templatePath(f.src),
-        this.destinationPath(`${this.variables.path}/${f.dist}`),
-        this.variables
-      );
+      if (this.options.dryRun) {
+        this.log(`create: ${this.variables.path}/${f.dist}`);
+      } else {
+        this.fs.copyTpl(
+          this.templatePath(f.src),
+          this.destinationPath(`${this.variables.path}/${f.dist}`),
+          this.variables
+        );
+      }
     }
   }
 
   Install() {
+    if (this.options.dryRun) {
+      return;
+    }
+
     this.log(
       yosay(
         `Update your module ${chalk.red(`${this.variables.name}.module.ts`)}`

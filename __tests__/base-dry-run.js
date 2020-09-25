@@ -7,12 +7,12 @@ describe("nestjs-gen:base", () => {
   beforeAll(() => {
     return helpers
       .run(path.join(__dirname, "../generators/base"))
-      .withOptions({ path: "foo" })
+      .withOptions({ path: "foo", "dry-run": true })
       .withArguments("demo");
   });
 
-  it("creates files", () => {
-    assert.file([
+  it("dry-run", () => {
+    assert.noFile([
       "./foo/demos/demos.module.ts",
       "./foo/demos/demos.constants.ts",
       "./foo/demos/demos.graphql",
