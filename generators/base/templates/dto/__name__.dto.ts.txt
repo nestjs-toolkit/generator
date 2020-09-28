@@ -6,6 +6,7 @@ import {
 } from '../../../graphql';
 
 export class <%= namePascal %>SearchDto implements <%= namePascal %>SearchInput {
+  readonly q?: string;
   readonly page?: number;
   readonly perPage?: number;
   readonly filter?: <%= namePascal %>FilterInput;
