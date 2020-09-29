@@ -1,8 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-
+import { PubSubService } from '@nestjs-toolkit/graphql';
 import { <%= namePascal %>PublishCommand } from '../commands';
 import { <%= nameUp %>_ON_CHANGES } from '../<%= namePlural %>.constants';
-import { PubSubService } from '../../../graphql';
 
 @CommandHandler(<%= namePascal %>PublishCommand)
 export class <%= namePascal %>PublishHandler
