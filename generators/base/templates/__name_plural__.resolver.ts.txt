@@ -13,7 +13,7 @@ import { Request } from '../../types';
 import { PubSubService } from '../../graphql';
 import { <%= nameUp %>_ON_CHANGES } from './<%= namePlural %>.constants';
 
-@Resolver()
+@Resolver('<%= namePascal %>')
 export class <%= namePluralPascal %>Resolver {
   constructor(
     private readonly pubSub: PubSubService,
@@ -58,11 +58,11 @@ export class <%= namePluralPascal %>Resolver {
   }
 
   @Mutation()
-  async delete<%= namePascal %>(@Context('request') req: any, @Args('id') id: string) {
-    await this.repository.deleteByID(id, req);
+  async delete<%= namePascal %>(@Context('request') req: any, @Args('ids') ids: string[]) {
+    await this.repository.deleteManyByID(ids, req);
 
     return {
-      message: '<%= namePascal %> deleted successfully',
+      message: '<%= namePluralPascal %> deleted successfully',
     };
   }
 

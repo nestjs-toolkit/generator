@@ -2,13 +2,13 @@ input <%= namePascal %>SortInput {
     name: Int
 }
 
-input <%= namePascal %>FilterInput {
-    q: String
+input <%= namePascal %>FilterInput {    
     id: ID
     name: String
 }
 
 input <%= namePascal %>SearchInput {
+    q: String
     page: Int
     perPage: Int
     sort: <%= namePascal %>SortInput
@@ -54,7 +54,7 @@ type Query {
 type Mutation {
     create<%= namePascal %>(input: <%= namePascal %>CreateInput!): <%= namePascal %>Response!
     update<%= namePascal %>(id: ID!, input: <%= namePascal %>UpdateInput!): <%= namePascal %>Response!
-    delete<%= namePascal %>(id: ID!): SimpleResponse!
+    delete<%= namePascal %>(ids: [ID!]!): SimpleResponse!
 }
 
 type Subscription {
