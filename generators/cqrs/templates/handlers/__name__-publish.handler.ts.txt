@@ -11,7 +11,7 @@ export class <%= namePascal %>PublishHandler
 
   execute({ model, action }: <%= namePascal %>PublishCommand): Promise<any> {
     return this.pubSub.publish(<%= nameUp %>_ON_CHANGES, {
-      id: model._id,
+      _id: model._id,
       action,
       data: model.toJSON(),
     });

@@ -3,7 +3,7 @@ input <%= namePascal %>SortInput {
 }
 
 input <%= namePascal %>FilterInput {    
-    id: ID
+    _id: ID
     name: String
 }
 
@@ -41,7 +41,7 @@ type <%= namePascal %>Response {
 }
 
 type <%= namePascal %>OnChange {
-    id: ID!
+    _id: ID!
     action: ActionsEnum!
     data: <%= namePascal %>!
 }

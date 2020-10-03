@@ -8,10 +8,10 @@ import {
 } from '@nestjs/graphql';
 import { Public } from 'nestjs-keycloak-admin';
 import { PubSubService } from '@nestjs-toolkit/graphql';
-import { <%= namePluralPascal %>Repository } from './<%= namePlural %>.repository';
-import { <%= namePascal %>CreateDto, <%= namePascal %>SearchDto, <%= namePascal %>UpdateDto } from './dto';
-import { Request } from '../../types';
-import { <%= nameUp %>_ON_CHANGES } from './<%= namePlural %>.constants';
+import { <%= namePluralPascal %>Repository } from '../<%= namePlural %>.repository';
+import { <%= namePascal %>CreateDto, <%= namePascal %>SearchDto, <%= namePascal %>UpdateDto } from '../dto';
+import { Request } from '../../../types';
+import { <%= nameUp %>_ON_CHANGES } from '../<%= namePlural %>.constants';
 
 @Resolver('<%= namePascal %>')
 export class <%= namePluralPascal %>Resolver {
