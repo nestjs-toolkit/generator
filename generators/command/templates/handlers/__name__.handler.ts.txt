@@ -1,0 +1,10 @@
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { <%= namePascal %>Command } from '../commands';
+
+@CommandHandler(<%= namePascal %>Command)
+export class <%= namePascal %>Handler implements ICommandHandler<<%= namePascal %>Command> {
+
+  execute(command: <%= namePascal %>Command): Promise<any> {
+    return Promise.resolve(undefined);
+  }
+}

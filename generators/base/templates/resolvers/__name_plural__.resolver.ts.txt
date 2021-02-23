@@ -10,7 +10,7 @@ import { Public } from 'nestjs-keycloak-admin';
 import { PubSubService } from '@nestjs-toolkit/graphql';
 import { <%= namePluralPascal %>Repository } from '../<%= namePlural %>.repository';
 import { <%= namePascal %>CreateDto, <%= namePascal %>SearchDto, <%= namePascal %>UpdateDto } from '../dto';
-import { Request } from '../../../types';
+import { RequestType } from '../../../types';
 import { <%= nameUp %>_ON_CHANGES } from '../<%= namePlural %>.constants';
 
 @Resolver('<%= namePascal %>')
@@ -32,7 +32,7 @@ export class <%= namePluralPascal %>Resolver {
 
   @Mutation()
   async create<%= namePascal %>(
-    @Context('req') req: Request,
+    @Context('req') req: RequestType,
     @Args('input') dto: <%= namePascal %>CreateDto,
   ) {
     const model = await this.repository.create(dto, req);
@@ -45,7 +45,7 @@ export class <%= namePluralPascal %>Resolver {
 
   @Mutation()
   async update<%= namePascal %>(
-    @Context('req') req: Request,
+    @Context('req') req: RequestType,
     @Args('id') id: string,
     @Args('input') dto: <%= namePascal %>UpdateDto,
   ) {
@@ -58,7 +58,7 @@ export class <%= namePluralPascal %>Resolver {
   }
 
   @Mutation()
-  async delete<%= namePascal %>(@Context('request') req: any, @Args('ids') ids: string[]) {
+  async delete<%= namePascal %>(@Context('request') req: RequestType, @Args('ids') ids: string[]) {
     await this.repository.deleteManyByID(ids, req);
 
     return {

@@ -14,11 +14,11 @@ import {
   <%= namePascal %>DeletedEvent,
   <%= namePascal %>UpdatedEvent,
 } from './events';
-import { Request } from '../../types';
+import { RequestType } from '../../types';
 import { <%= namePascal %>SearchInput } from '../../graphql';
 
 @Injectable()
-export class <%= namePluralPascal %>Repository extends AbstractRepository<<%= namePascal %>, Request> {
+export class <%= namePluralPascal %>Repository extends AbstractRepository<<%= namePascal %>, RequestType> {
   constructor(
     private readonly eventBus: EventBus,
     private readonly logger: WinstonLogger,
@@ -54,7 +54,7 @@ export class <%= namePluralPascal %>Repository extends AbstractRepository<<%= na
     };
   }
 
-  async create(dto: <%= namePascal %>CreateDto, req?: Request): Promise<<%= namePascal %>> {
+  async create(dto: <%= namePascal %>CreateDto, req?: RequestType): Promise<<%= namePascal %>> {
     const <%= name %> = new this.model(dto);
     await <%= name %>.save();
 
@@ -71,13 +71,15 @@ export class <%= namePluralPascal %>Repository extends AbstractRepository<<%= na
 
     return <%= name %>;
   }
-  
+
   async update(
     model: <%= namePascal %>,
     dto: <%= namePascal %>UpdateDto,
-    req?: Request,
+    req?: RequestType,
   ): Promise<MaybeModelWithOld<<%= namePascal %>>> {
     const result = await this.updateOne({ _id: model._id }, dto);
+
+    if (!result.model) return result;
 
     const event = new <%= namePascal %>UpdatedEvent(result.model, result.old, req);
 
@@ -93,7 +95,7 @@ export class <%= namePluralPascal %>Repository extends AbstractRepository<<%= na
     return result;
   }
 
-  async delete(<%= name %>: <%= namePascal %>, req?: Request): Promise<boolean> {
+  async delete(<%= name %>: <%= namePascal %>, req?: RequestType): Promise<boolean> {
     const { deletedCount } = await this.model.deleteOne({ _id: <%= name %>._id });
 
     if (deletedCount) {

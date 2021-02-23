@@ -3,7 +3,7 @@ import {
   OnModelChangedEvent,
 } from '@nestjs-toolkit/winston-logger';
 import { <%= namePascal %> } from '../schemas';
-import { Request, User } from '../../../types';
+import { RequestType, User } from '../../../types';
 
 export class <%= namePascal %>UpdatedEvent implements OnModelChangedEvent {
   readonly collection = '<%= namePlural %>';
@@ -13,7 +13,7 @@ export class <%= namePascal %>UpdatedEvent implements OnModelChangedEvent {
   constructor(
     public readonly model: <%= namePascal %>,
     public readonly old?: Partial<<%= namePascal %>>,
-    public readonly req?: Request,
+    public readonly req?: RequestType,
     public readonly user?: User,
   ) {
     if (!user && req) {
