@@ -1,0 +1,3 @@
+import { ScenesSagas } from './scenes.sagas';
+
+export const SagaListeners = [ScenesSagas];

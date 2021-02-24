@@ -1,0 +1,1 @@
+export { Scene, SceneSchema } from './scene.schema';

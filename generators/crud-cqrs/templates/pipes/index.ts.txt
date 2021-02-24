@@ -1,0 +1,4 @@
+export { CreateScenePipe } from './create-scene.pipe';
+export { RemoveScenePipe } from './remove-scene.pipe';
+export { SearchScenePipe } from './search-scene.pipe';
+export { UpdateScenePipe } from './update-scene.pipe';

@@ -1,0 +1,12 @@
+import Joi, { ObjectSchema } from 'joi';
+import { Injectable } from '@nestjs/common';
+import { SceneRemoveArgs } from '../dto';
+import { BaseScenePipe } from './base-scene.pipe';
+
+@Injectable()
+export class RemoveScenePipe extends BaseScenePipe<SceneRemoveArgs> {
+  rules(data: SceneRemoveArgs): ObjectSchema {
+    const filter = this.makeFilterSchema(data.filter.forceAll);
+    return Joi.object({ filter }).required();
+  }
+}

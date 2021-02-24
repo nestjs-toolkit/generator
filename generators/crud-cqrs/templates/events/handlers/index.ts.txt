@@ -1,0 +1,9 @@
+import { SceneCreatedHandler } from './scene-created.handler';
+import { SceneUpdatedHandler } from './scene-updated.handler';
+import { SceneRemovedHandler } from './scene-removed.handler';
+
+export const EventHandlers = [
+  SceneCreatedHandler,
+  SceneRemovedHandler,
+  SceneUpdatedHandler,
+];

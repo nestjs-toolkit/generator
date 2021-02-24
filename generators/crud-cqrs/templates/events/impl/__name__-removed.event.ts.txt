@@ -1,0 +1,11 @@
+import { ContextType } from '@core/types';
+import { Scene } from '../../schemas';
+import { SceneFilterDto } from '../../dto';
+
+export class SceneRemovedEvent {
+  constructor(
+    public readonly model: Scene,
+    public readonly filter: SceneFilterDto,
+    public readonly context: ContextType,
+  ) {}
+}

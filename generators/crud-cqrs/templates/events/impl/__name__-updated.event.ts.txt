@@ -1,0 +1,12 @@
+import { ContextType } from '@core/types';
+import { Scene } from '../../schemas';
+import { SceneUpdateDto } from '../../dto';
+
+export class SceneUpdatedEvent {
+  constructor(
+    public readonly model: Scene,
+    public readonly old: Record<string, any>,
+    public readonly dto: SceneUpdateDto,
+    public readonly context: ContextType,
+  ) {}
+}

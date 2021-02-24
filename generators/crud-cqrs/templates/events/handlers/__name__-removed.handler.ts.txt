@@ -1,0 +1,31 @@
+import { IEventHandler, EventsHandler } from '@nestjs/cqrs';
+import { WinstonLogger } from '@nestjs-toolkit/winston-logger';
+import { SceneRemovedEvent } from '../impl';
+
+// TODO refatorar para registrar enviar para logstash + kibana
+@EventsHandler(SceneRemovedEvent)
+export class SceneRemovedHandler implements IEventHandler<SceneRemovedEvent> {
+  constructor(private readonly logger: WinstonLogger) {}
+
+  handle({ model, filter, context }: SceneRemovedEvent) {
+    const { req, user } = context;
+    const causer = {
+      collection: 'user_keycloak',
+      username: user.username,
+      _id: user.sub,
+    };
+
+    this.logger
+      .activity()
+      .tags('scenes')
+      .action('scenes:remove')
+      .requestRpc(req)
+      .causedBy(causer)
+      .performedOn(model, 'scenes')
+      .namespaceById('*', 'manager')
+      .withProperty('dto', filter)
+      .withProperty('model', model.toJSON())
+      .contextIn(SceneRemovedHandler.name)
+      .log('Cenário removido: :subject.name');
+  }
+}

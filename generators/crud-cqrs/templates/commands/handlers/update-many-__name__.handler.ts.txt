@@ -1,0 +1,77 @@
+import { Logger } from '@nestjs/common';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import clc from 'cli-color';
+import { ContextType } from '@core/types';
+import { RowValidationException } from '@core/exceptions';
+import { ScenesRepository } from '../../scenes.repository';
+import { Scene } from '../../schemas';
+import { SceneUpdateDto } from '../../dto';
+import { SceneUpdatedEvent } from '../../events/impl';
+import { UpdateManySceneCommand } from '../impl';
+
+type Response = { nModified: number; results: Scene[] };
+
+@CommandHandler(UpdateManySceneCommand)
+export class UpdateManySceneHandler
+  implements ICommandHandler<UpdateManySceneCommand> {
+  private logger = new Logger(UpdateManySceneHandler.name);
+
+  constructor(
+    private readonly eventBus: EventBus,
+    private readonly repository: ScenesRepository,
+  ) {}
+
+  async execute({
+    filter,
+    update,
+    context,
+  }: UpdateManySceneCommand): Promise<Response> {
+    const models = await this.repository.findByFilters(filter);
+
+    const promises = models.map((model, index) => {
+      this.logger.debug(
+        clc.redBright(
+          `Init update scene ${index + 1}/${models.length}: ${model.name}`,
+        ),
+      );
+
+      return this.update(model, update, context);
+    });
+
+    const results = await Promise.all(promises);
+    const modifiers = results.filter((model) => !!model);
+
+    return {
+      results: modifiers,
+      nModified: modifiers.length,
+    };
+  }
+
+  private async update(
+    model: Scene,
+    dto: SceneUpdateDto,
+    context: ContextType,
+  ) {
+    try {
+      model.set(dto);
+      await model.save();
+    } catch (e) {
+      this.logger.error(e);
+
+      if (e.code === 11000) {
+        throw new RowValidationException(
+          `input.*`,
+          'string.unique',
+          'campo "slug ou nome" já está sendo utilizado!',
+        );
+      }
+
+      return null;
+    }
+
+    const old = model.toJSON();
+    this.eventBus.publish(new SceneUpdatedEvent(model, old, dto, context));
+
+    return model;
+  }
+}

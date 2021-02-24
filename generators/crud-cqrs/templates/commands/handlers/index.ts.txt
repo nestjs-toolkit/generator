@@ -1,0 +1,9 @@
+import { CreateManySceneHandler } from './create-many-scene.handler';
+import { RemoveManySceneHandler } from './remove-many-scene.handler';
+import { UpdateManySceneHandler } from './update-many-scene.handler';
+
+export const CommandHandlers = [
+  CreateManySceneHandler,
+  RemoveManySceneHandler,
+  UpdateManySceneHandler,
+];

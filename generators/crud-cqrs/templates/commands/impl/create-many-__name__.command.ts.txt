@@ -1,0 +1,9 @@
+import { ContextType } from '@core/types';
+import { SceneCreateDto } from '../../dto';
+
+export class CreateManySceneCommand {
+  constructor(
+    public readonly rows: SceneCreateDto[],
+    public readonly context: ContextType,
+  ) {}
+}

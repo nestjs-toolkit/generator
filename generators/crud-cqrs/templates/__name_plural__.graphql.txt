@@ -1,0 +1,85 @@
+input SortSceneInput {
+    name: SortOrderEnum
+    enable: SortOrderEnum
+    position: SortOrderEnum
+    createdAt: SortOrderEnum
+    updatedAt: SortOrderEnum
+}
+
+input SceneConditionAndInput {
+    name: String
+    position: Int
+    slug: String
+    cacheKey: String
+    enable: Boolean
+}
+
+input SceneSearchInput {
+    q: String
+    ids: [ID]
+    sort: SortSceneInput
+    page: Int
+    perPage: Int
+    and: SceneConditionAndInput
+}
+
+# TODO: mudar file para obrigatorio
+input SceneCreateInput {
+    name: String!
+    file: Upload
+    position: Int!
+    slug: String!
+    enable: Boolean!
+}
+
+input SceneFilterInput {
+    ids: [ID!]!
+    forceAll: Boolean
+}
+
+input SceneUpdateDataInput {
+    name: String
+    file: Upload
+    position: Int
+    slug: String
+    enable: Boolean
+}
+
+type SceneResponse {
+    message: String
+    edges: [SceneManager]!
+    pagination: Pagination
+}
+
+#type SceneOnChanges {
+#    action: ActionsEnum!
+#    result: [SceneManager]!
+#}
+
+type SceneManager {
+    _id: ID!
+    name: String!
+    thumb: String!
+    position: Int!
+    slug: String!
+    cacheKey: String!
+    enable: Boolean!
+    createdAt: CustomDate!
+    updatedAt: CustomDate!
+}
+
+type Query {
+    sceneManger(id: String!): SceneManager
+    scenesManger(params: SceneSearchInput): SceneResponse!
+}
+
+type Mutation {
+    createScenesManger(rows: [SceneCreateInput]!): SceneResponse!
+    updateScenesManger(filter: SceneFilterInput!, input: SceneUpdateDataInput!): SceneResponse!
+    removeScenesManger(filter: SceneFilterInput!): SceneResponse!
+}
+
+#type Subscription {
+#    changedScene: SceneOnChanges!
+#}
+

@@ -1,0 +1,20 @@
+import Joi, { ObjectSchema } from 'joi';
+import { Injectable } from '@nestjs/common';
+import { SceneCreateArgs } from '../dto';
+import { BaseScenePipe } from './base-scene.pipe';
+
+@Injectable()
+export class CreateScenePipe extends BaseScenePipe<SceneCreateArgs> {
+  rules(): ObjectSchema {
+    const dto = Joi.object().keys({
+      name: Joi.string().min(3).max(200).required(),
+      slug: Joi.string().hostname().min(3).max(200).required(),
+      position: Joi.number().required(),
+      enable: Joi.boolean().required(),
+    });
+
+    return Joi.object({
+      rows: Joi.array().items(dto).min(1).required(),
+    }).required();
+  }
+}

@@ -1,0 +1,31 @@
+import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+import { WinstonLogger } from '@nestjs-toolkit/winston-logger';
+import { SceneCreatedEvent } from '../impl';
+
+// TODO refatorar para registrar LOG e enviar para logstash + kibana
+@EventsHandler(SceneCreatedEvent)
+export class SceneCreatedHandler implements IEventHandler<SceneCreatedEvent> {
+  constructor(private readonly logger: WinstonLogger) {}
+
+  handle({ model, dto, context }: SceneCreatedEvent) {
+    const { req, user } = context;
+    const causer = {
+      collection: 'user_keycloak',
+      username: user.username,
+      _id: user.sub,
+    };
+
+    this.logger
+      .activity()
+      .tags('scenes')
+      .action('scenes:create')
+      .requestGql(req)
+      .causedBy(causer)
+      .performedOn(model, 'scenes')
+      .namespaceById('*', 'manager')
+      .withProperty('dto', dto)
+      .withProperty('model', model.toJSON())
+      .contextIn(SceneCreatedHandler.name)
+      .log('Cadastrado um cenário: :subject.name');
+  }
+}

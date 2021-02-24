@@ -1,0 +1,7 @@
+import { FindSceneHandler } from './find-scene.handler';
+import { SearchScenesHandler } from './search-scenes.handler';
+
+export const QueryHandlers = [
+  FindSceneHandler,
+  SearchScenesHandler
+];

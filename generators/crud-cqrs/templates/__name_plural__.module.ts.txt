@@ -1,0 +1,27 @@
+import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+import { MongooseModule } from '@nestjs/mongoose';
+import { CommandHandlers } from './commands/handlers';
+import { EventHandlers } from './events/handlers';
+import { QueryHandlers } from './queries/handlers';
+import { SagaListeners } from './sagas';
+import { ScenesManagerResolver, ScenesUserResolver } from './resolvers';
+import { Scene, SceneSchema } from './schemas';
+import { ScenesRepository } from './scenes.repository';
+
+@Module({
+  imports: [
+    CqrsModule,
+    MongooseModule.forFeature([{ name: Scene.name, schema: SceneSchema }]),
+  ],
+  providers: [
+    ScenesUserResolver,
+    ScenesManagerResolver,
+    ScenesRepository,
+    ...CommandHandlers,
+    ...EventHandlers,
+    ...QueryHandlers,
+    ...SagaListeners,
+  ],
+})
+export class ScenesModule {}

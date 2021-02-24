@@ -1,0 +1,21 @@
+import Joi, { ObjectSchema } from 'joi';
+import { Injectable } from '@nestjs/common';
+import { JoiObjectId } from '@core/validations/exetensions';
+import { SceneSearchArgs } from '../dto';
+import { BaseScenePipe } from './base-scene.pipe';
+
+@Injectable()
+export class SearchScenePipe extends BaseScenePipe<SceneSearchArgs> {
+  rules(): ObjectSchema {
+    const params = Joi.object({
+      q: Joi.string().allow('').optional(),
+      sort: Joi.object().optional(),
+      and: Joi.object().optional(),
+      ids: Joi.array().items(JoiObjectId).optional(),
+      page: Joi.number().min(1).optional(),
+      perPage: Joi.number().min(1).optional(),
+    });
+
+    return Joi.object({ params }).optional();
+  }
+}

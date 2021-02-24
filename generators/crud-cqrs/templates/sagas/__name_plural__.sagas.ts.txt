@@ -1,0 +1,52 @@
+import { Injectable } from '@nestjs/common';
+import { ICommand, ofType, Saga } from '@nestjs/cqrs';
+import clc from 'cli-color';
+import { Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
+import {
+  SceneCreatedEvent,
+  SceneRemovedEvent,
+  SceneUpdatedEvent,
+} from '../events/impl';
+
+@Injectable()
+export class ScenesSagas {
+  @Saga()
+  sceneCreated = (events$: Observable<any>): Observable<ICommand> => {
+    return events$.pipe(
+      ofType(SceneCreatedEvent),
+      mergeMap((event) => {
+        console.log(
+          clc.redBright(`[ScenesSagas]: created #${event.model._id}`),
+        );
+        return [];
+      }),
+    );
+  };
+
+  @Saga()
+  sceneUpdated = (events$: Observable<any>): Observable<ICommand> => {
+    return events$.pipe(
+      ofType(SceneUpdatedEvent),
+      mergeMap((event) => {
+        console.log(
+          clc.redBright(`[ScenesSagas]: updated #${event.model._id}`),
+        );
+        return [];
+      }),
+    );
+  };
+
+  @Saga()
+  sceneRemoved = (events$: Observable<any>): Observable<ICommand> => {
+    return events$.pipe(
+      ofType(SceneRemovedEvent),
+      mergeMap((event) => {
+        console.log(
+          clc.redBright(`[ScenesSagas]: removed #${event.model._id}`),
+        );
+        return [];
+      }),
+    );
+  };
+}

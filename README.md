@@ -13,7 +13,12 @@ npm install -g generator-nestjs-gen
 Then generate your new project:
 
 ```bash
-yo nestjs-gen
+git clone git@github.com:nestjs-toolkit/generator.git my-generator  
+cd my-generator  
+yarn link generator-nestjs-gen  
+yo nestjs-gen:resource tag --help
+yo nestjs-gen:resource tag --dry-run
+yo nestjs-gen:resource tag -p demo --dry-run
 ```
 
 ## Getting To Know Yeoman

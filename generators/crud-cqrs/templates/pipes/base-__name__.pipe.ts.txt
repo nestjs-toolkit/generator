@@ -1,0 +1,28 @@
+import Joi, { ObjectSchema } from 'joi';
+import { BaseValidationPipe, DataRecord } from '@core/validations';
+import { JoiObjectId } from '@core/validations/exetensions';
+
+export abstract class BaseScenePipe<Args> extends BaseValidationPipe<Args> {
+  messages(): DataRecord {
+    return {};
+  }
+
+  attributes(): Record<string, string> {
+    return {
+      name: 'nome',
+      position: 'ordem',
+      enable: 'ativar',
+    };
+  }
+
+  protected makeFilterSchema(forceAll: boolean): ObjectSchema {
+    const ids = forceAll
+      ? Joi.array().items(JoiObjectId).min(0).optional()
+      : Joi.array().items(JoiObjectId).min(1).required();
+
+    return Joi.object({
+      ids,
+      forceAll: Joi.boolean().optional(),
+    }).required();
+  }
+}

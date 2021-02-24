@@ -1,0 +1,64 @@
+import { Logger } from '@nestjs/common';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import clc from 'cli-color';
+import { ContextType } from '@core/types';
+import { ScenesRepository } from '../../scenes.repository';
+import { Scene } from '../../schemas';
+import { SceneRemovedEvent } from '../../events/impl';
+import { SceneFilterDto } from '../../dto';
+import { RemoveManySceneCommand } from '../impl';
+
+type Response = { nModified: number; results: Scene[] };
+
+@CommandHandler(RemoveManySceneCommand)
+export class RemoveManySceneHandler
+  implements ICommandHandler<RemoveManySceneCommand> {
+  private logger = new Logger(RemoveManySceneHandler.name);
+
+  constructor(
+    private readonly eventBus: EventBus,
+    private readonly repository: ScenesRepository,
+  ) {}
+
+  async execute({
+    filter,
+    context,
+  }: RemoveManySceneCommand): Promise<Response> {
+    const models = await this.repository.findByFilters(filter);
+
+    const promises = models.map((model, index) => {
+      this.logger.debug(
+        clc.redBright(
+          `Init remove scene ${index + 1}/${models.length}: ${model.name}`,
+        ),
+      );
+
+      return this.remove(model, filter, context);
+    });
+
+    const results = await Promise.all(promises);
+    const modifiers = results.filter((model) => !!model);
+
+    return {
+      results: modifiers,
+      nModified: modifiers.length,
+    };
+  }
+
+  private async remove(
+    model: Scene,
+    filter: SceneFilterDto,
+    context: ContextType,
+  ): Promise<Scene | null> {
+    try {
+      await model.remove();
+    } catch (e) {
+      this.logger.error(e);
+      return null;
+    }
+
+    this.eventBus.publish(new SceneRemovedEvent(model, filter, context));
+
+    return model;
+  }
+}

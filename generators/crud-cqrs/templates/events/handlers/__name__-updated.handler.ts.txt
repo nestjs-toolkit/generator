@@ -1,0 +1,40 @@
+import { IEventHandler, EventsHandler } from '@nestjs/cqrs';
+import {
+  nestWinstonUtilities,
+  WinstonLogger,
+} from '@nestjs-toolkit/winston-logger';
+import { SceneUpdatedEvent } from '../impl';
+
+// TODO refatorar para registrar enviar para logstash + kibana
+@EventsHandler(SceneUpdatedEvent)
+export class SceneUpdatedHandler implements IEventHandler<SceneUpdatedEvent> {
+  constructor(private readonly logger: WinstonLogger) {}
+
+  handle({ model, old, dto, context }: SceneUpdatedEvent) {
+    const { req, user } = context;
+    const causer = {
+      collection: 'user_keycloak',
+      username: user.username,
+      _id: user.sub,
+    };
+
+    const detailedDiff = nestWinstonUtilities.diff.detailed(
+      old,
+      model.toJSON(),
+    );
+
+    this.logger
+      .activity()
+      .tags('scenes')
+      .action('scenes')
+      .requestRpc(req)
+      .causedBy(causer)
+      .performedOn(model, 'scenes')
+      .namespaceById('*', 'manager')
+      .withProperty('dto', dto)
+      .withProperty('diff', detailedDiff)
+      .withProperty('model', model.toJSON())
+      .contextIn(SceneUpdatedHandler.name)
+      .log('cenário atualizado: :subject.name');
+  }
+}

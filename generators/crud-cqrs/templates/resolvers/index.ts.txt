@@ -1,0 +1,2 @@
+export { ScenesUserResolver } from './scenes-user.resolver';
+export { ScenesManagerResolver } from './scenes-manager.resolver';

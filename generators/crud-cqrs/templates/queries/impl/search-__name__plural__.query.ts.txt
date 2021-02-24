@@ -1,0 +1,5 @@
+import { SceneSearchDto } from '../../dto';
+
+export class SearchScenesQuery {
+  constructor(public readonly dto: SceneSearchDto) {}
+}

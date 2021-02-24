@@ -1,0 +1,11 @@
+import { ContextType } from '@core/types';
+import { Scene } from '../../schemas';
+import { SceneCreateDto } from '../../dto';
+
+export class SceneCreatedEvent {
+  constructor(
+    public readonly model: Scene,
+    public readonly dto: SceneCreateDto,
+    public readonly context: ContextType,
+  ) {}
+}

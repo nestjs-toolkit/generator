@@ -1,0 +1,35 @@
+import {
+  SceneCreateInput,
+  SceneFilterInput,
+  SceneSearchInput,
+  SceneUpdateDataInput,
+} from '@core/graphql/definitions';
+
+export type SceneFilterDto = SceneFilterInput;
+
+export type SceneUpdateDto = SceneUpdateDataInput;
+
+export type SceneCreateDto = SceneCreateInput;
+
+export type SceneSearchDto = SceneSearchInput;
+
+export type SceneFindArgs = {
+  id: string;
+};
+
+export type SceneSearchArgs = {
+  params?: SceneSearchDto;
+};
+
+export type SceneCreateArgs = {
+  rows: SceneCreateDto[];
+};
+
+export type SceneUpdateArgs = {
+  filter: SceneFilterDto;
+  input: SceneUpdateDto;
+};
+
+export type SceneRemoveArgs = {
+  filter: SceneFilterDto;
+};

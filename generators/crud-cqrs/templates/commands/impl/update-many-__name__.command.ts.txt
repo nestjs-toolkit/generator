@@ -1,0 +1,10 @@
+import { ContextType } from '@core/types';
+import { SceneFilterDto, SceneUpdateDto } from '../../dto';
+
+export class UpdateManySceneCommand {
+  constructor(
+    public readonly filter: SceneFilterDto,
+    public readonly update: SceneUpdateDto,
+    public readonly context: ContextType,
+  ) {}
+}

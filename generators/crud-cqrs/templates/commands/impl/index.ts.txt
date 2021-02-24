@@ -1,0 +1,3 @@
+export { CreateManySceneCommand } from './create-many-scene.command';
+export { RemoveManySceneCommand } from './remove-many-scene.command';
+export { UpdateManySceneCommand } from './update-many-scene.command';

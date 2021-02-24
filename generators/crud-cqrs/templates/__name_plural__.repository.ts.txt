@@ -1,0 +1,88 @@
+import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { EdgesResponse } from '@core/types';
+import {
+  SceneConditionAndInput,
+  SceneFilterInput,
+} from '@core/graphql/definitions';
+import { BaseRepository } from '@core/repositories';
+import { Scene } from './schemas';
+import { SceneCreateDto, SceneSearchDto } from './dto';
+
+type MaybeScene = Scene | undefined;
+type ResultSearch = EdgesResponse<Scene>;
+
+@Injectable()
+export class ScenesRepository extends BaseRepository<Scene> {
+  constructor(@InjectModel(Scene.name) model: Model<Scene>) {
+    super(model);
+  }
+
+  async search(
+    payload: SceneSearchDto,
+    projection?: any,
+  ): Promise<ResultSearch> {
+    const conditions = {};
+    const { page, perPage, sort, and, q, ids } = Object.assign(
+      { page: 1, perPage: 12, sort: {}, and: {} },
+      payload,
+    );
+
+    if (ids?.length) {
+      conditions['_id'] = { $in: ids };
+    }
+
+    if (q) {
+      conditions['name'] = { $regex: q, $options: 'i' };
+    }
+
+    const allowWhere: (keyof SceneConditionAndInput)[] = [
+      'name',
+      'cacheKey',
+      'enable',
+      'position',
+      'slug',
+    ];
+
+    allowWhere.forEach((col) => {
+      if (and[col] !== undefined) {
+        conditions[col] = and[col];
+      }
+    });
+
+    return this.execWithPagination(conditions, projection, sort, perPage, page);
+  }
+
+  async hasNameOrSlug(names: string[], slugs: string[]): Promise<MaybeScene> {
+    return this.model.findOne({
+      $or: [{ name: { $in: names } }, { slug: { $in: slugs } }],
+    });
+  }
+
+  async save(dto: SceneCreateDto): Promise<Scene> {
+    const scene: Scene = new this.model({
+      name: dto.name,
+      slug: dto.slug, // TODO: make slug
+      position: dto.position,
+      enable: dto.enable,
+      thumb: 'a',
+    });
+
+    return scene.save();
+  }
+
+  async findByFilters(filter: SceneFilterInput): Promise<Scene[]> {
+    const { forceAll, ids } = filter;
+
+    if (forceAll) {
+      return this.model.find();
+    }
+
+    return this.findByIds(ids);
+  }
+
+  async allEnabled(): Promise<Scene[]> {
+    return this.model.find({ enable: true }).sort({ position: -1 }).exec();
+  }
+}

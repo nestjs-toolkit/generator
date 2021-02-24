@@ -1,0 +1,17 @@
+import { Logger } from '@nestjs/common';
+import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { ScenesRepository } from '../../scenes.repository';
+import { Scene } from '../../schemas';
+import { FindSceneQuery } from '../impl';
+
+@QueryHandler(FindSceneQuery)
+export class FindSceneHandler implements IQueryHandler<FindSceneQuery> {
+  private logger = new Logger(FindSceneHandler.name);
+
+  constructor(private readonly repository: ScenesRepository) {}
+
+  async execute({ id }: FindSceneQuery): Promise<Scene> {
+    this.logger.debug(`Find Scene: ${id}`);
+    return this.repository.findOne(id);
+  }
+}
