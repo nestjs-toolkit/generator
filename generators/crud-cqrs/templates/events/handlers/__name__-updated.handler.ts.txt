@@ -3,14 +3,14 @@ import {
   nestWinstonUtilities,
   WinstonLogger,
 } from '@nestjs-toolkit/winston-logger';
-import { SceneUpdatedEvent } from '../impl';
+import { <%= namePascal %>UpdatedEvent } from '../impl';
 
 // TODO refatorar para registrar enviar para logstash + kibana
-@EventsHandler(SceneUpdatedEvent)
-export class SceneUpdatedHandler implements IEventHandler<SceneUpdatedEvent> {
+@EventsHandler(<%= namePascal %>UpdatedEvent)
+export class <%= namePascal %>UpdatedHandler implements IEventHandler<<%= namePascal %>UpdatedEvent> {
   constructor(private readonly logger: WinstonLogger) {}
 
-  handle({ model, old, dto, context }: SceneUpdatedEvent) {
+  handle({ model, old, dto, context }: <%= namePascal %>UpdatedEvent) {
     const { req, user } = context;
     const causer = {
       collection: 'user_keycloak',
@@ -25,16 +25,16 @@ export class SceneUpdatedHandler implements IEventHandler<SceneUpdatedEvent> {
 
     this.logger
       .activity()
-      .tags('scenes')
-      .action('scenes')
+      .tags('<%= namePlural %>')
+      .action('<%= namePlural %>:update')
       .requestRpc(req)
       .causedBy(causer)
-      .performedOn(model, 'scenes')
+      .performedOn(model, '<%= namePlural %>')
       .namespaceById('*', 'manager')
       .withProperty('dto', dto)
       .withProperty('diff', detailedDiff)
       .withProperty('model', model.toJSON())
-      .contextIn(SceneUpdatedHandler.name)
+      .contextIn(<%= namePascal %>UpdatedHandler.name)
       .log('cenário atualizado: :subject.name');
   }
 }

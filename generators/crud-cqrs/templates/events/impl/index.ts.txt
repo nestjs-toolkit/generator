@@ -1,3 +1,3 @@
-export { SceneCreatedEvent } from './scene-created.event';
-export { SceneRemovedEvent } from './scene-removed.event';
-export { SceneUpdatedEvent } from './scene-updated.event';
+export { <%= namePascal %>CreatedEvent } from './<%= nameCamel %>-created.event';
+export { <%= namePascal %>RemovedEvent } from './<%= nameCamel %>-removed.event';
+export { <%= namePascal %>UpdatedEvent } from './<%= nameCamel %>-updated.event';

@@ -46,6 +46,8 @@ module.exports = class extends Generator {
       name: this.options.name,
       basePath: this.options.path
     });
+
+    console.log(this.variables);
   }
 
   async writing() {

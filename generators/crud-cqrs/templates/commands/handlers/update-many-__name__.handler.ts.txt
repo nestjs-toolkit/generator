@@ -3,35 +3,35 @@ import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import clc from 'cli-color';
 import { ContextType } from '@core/types';
 import { RowValidationException } from '@core/exceptions';
-import { ScenesRepository } from '../../scenes.repository';
-import { Scene } from '../../schemas';
-import { SceneUpdateDto } from '../../dto';
-import { SceneUpdatedEvent } from '../../events/impl';
-import { UpdateManySceneCommand } from '../impl';
+import { <%= namePluralPascal %>Repository } from '../../<%= namePlural %>.repository';
+import { <%= namePascal %> } from '../../schemas';
+import { <%= namePascal %>UpdateDto } from '../../dto';
+import { <%= namePascal %>UpdatedEvent } from '../../events/impl';
+import { UpdateMany<%= namePascal %>Command } from '../impl';
 
-type Response = { nModified: number; results: Scene[] };
+type Response = { nModified: number; results: <%= namePascal %>[] };
 
-@CommandHandler(UpdateManySceneCommand)
-export class UpdateManySceneHandler
-  implements ICommandHandler<UpdateManySceneCommand> {
-  private logger = new Logger(UpdateManySceneHandler.name);
+@CommandHandler(UpdateMany<%= namePascal %>Command)
+export class UpdateMany<%= namePascal %>Handler
+  implements ICommandHandler<UpdateMany<%= namePascal %>Command> {
+  private logger = new Logger(UpdateMany<%= namePascal %>Handler.name);
 
   constructor(
     private readonly eventBus: EventBus,
-    private readonly repository: ScenesRepository,
+    private readonly repository: <%= namePluralPascal %>Repository,
   ) {}
 
   async execute({
     filter,
     update,
     context,
-  }: UpdateManySceneCommand): Promise<Response> {
+  }: UpdateMany<%= namePascal %>Command): Promise<Response> {
     const models = await this.repository.findByFilters(filter);
 
     const promises = models.map((model, index) => {
       this.logger.debug(
         clc.redBright(
-          `Init update scene ${index + 1}/${models.length}: ${model.name}`,
+          `Init update <%= nameCamel %> ${index + 1}/${models.length}: ${model.name}`,
         ),
       );
 
@@ -48,8 +48,8 @@ export class UpdateManySceneHandler
   }
 
   private async update(
-    model: Scene,
-    dto: SceneUpdateDto,
+    model: <%= namePascal %>,
+    dto: <%= namePascal %>UpdateDto,
     context: ContextType,
   ) {
     try {
@@ -70,7 +70,7 @@ export class UpdateManySceneHandler
     }
 
     const old = model.toJSON();
-    this.eventBus.publish(new SceneUpdatedEvent(model, old, dto, context));
+    this.eventBus.publish(new <%= namePascal %>UpdatedEvent(model, old, dto, context));
 
     return model;
   }

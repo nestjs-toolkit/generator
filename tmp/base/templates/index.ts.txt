@@ -1,5 +1,0 @@
-export * from './schemas';
-export * from './commands';
-export * from './<%= namePlural %>.constants';
-export { <%= namePluralPascal %>Module } from './<%= namePlural %>.module';
-export { <%= namePluralPascal %>Repository } from './<%= namePlural %>.repository';

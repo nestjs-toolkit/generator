@@ -1,35 +1,35 @@
 import {
-  SceneCreateInput,
-  SceneFilterInput,
-  SceneSearchInput,
-  SceneUpdateDataInput,
+  <%= namePascal %>CreateInput,
+  <%= namePascal %>FilterInput,
+  <%= namePascal %>SearchInput,
+  <%= namePascal %>UpdateDataInput,
 } from '@core/graphql/definitions';
 
-export type SceneFilterDto = SceneFilterInput;
+export type <%= namePascal %>FilterDto = <%= namePascal %>FilterInput;
 
-export type SceneUpdateDto = SceneUpdateDataInput;
+export type <%= namePascal %>UpdateDto = <%= namePascal %>UpdateDataInput;
 
-export type SceneCreateDto = SceneCreateInput;
+export type <%= namePascal %>CreateDto = <%= namePascal %>CreateInput;
 
-export type SceneSearchDto = SceneSearchInput;
+export type <%= namePascal %>SearchDto = <%= namePascal %>SearchInput;
 
-export type SceneFindArgs = {
+export type <%= namePascal %>FindArgs = {
   id: string;
 };
 
-export type SceneSearchArgs = {
-  params?: SceneSearchDto;
+export type <%= namePascal %>SearchArgs = {
+  params?: <%= namePascal %>SearchDto;
 };
 
-export type SceneCreateArgs = {
-  rows: SceneCreateDto[];
+export type <%= namePascal %>CreateArgs = {
+  rows: <%= namePascal %>CreateDto[];
 };
 
-export type SceneUpdateArgs = {
-  filter: SceneFilterDto;
-  input: SceneUpdateDto;
+export type <%= namePascal %>UpdateArgs = {
+  filter: <%= namePascal %>FilterDto;
+  input: <%= namePascal %>UpdateDto;
 };
 
-export type SceneRemoveArgs = {
-  filter: SceneFilterDto;
+export type <%= namePascal %>RemoveArgs = {
+  filter: <%= namePascal %>FilterDto;
 };

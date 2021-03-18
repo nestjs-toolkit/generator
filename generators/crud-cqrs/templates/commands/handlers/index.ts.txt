@@ -1,9 +1,9 @@
-import { CreateManySceneHandler } from './create-many-scene.handler';
-import { RemoveManySceneHandler } from './remove-many-scene.handler';
-import { UpdateManySceneHandler } from './update-many-scene.handler';
+import { CreateMany<%= namePascal %>Handler } from './create-many-<%= nameCamel %>.handler';
+import { RemoveMany<%= namePascal %>Handler } from './remove-many-<%= nameCamel %>.handler';
+import { UpdateMany<%= namePascal %>Handler } from './update-many-<%= nameCamel %>.handler';
 
 export const CommandHandlers = [
-  CreateManySceneHandler,
-  RemoveManySceneHandler,
-  UpdateManySceneHandler,
+  CreateMany<%= namePascal %>Handler,
+  RemoveMany<%= namePascal %>Handler,
+  UpdateMany<%= namePascal %>Handler,
 ];

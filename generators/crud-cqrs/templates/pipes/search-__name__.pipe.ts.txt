@@ -1,11 +1,11 @@
 import Joi, { ObjectSchema } from 'joi';
 import { Injectable } from '@nestjs/common';
 import { JoiObjectId } from '@core/validations/exetensions';
-import { SceneSearchArgs } from '../dto';
-import { BaseScenePipe } from './base-scene.pipe';
+import { <%= namePascal %>SearchArgs } from '../dto';
+import { Base<%= namePascal %>Pipe } from './base-<%= nameCamel %>.pipe';
 
 @Injectable()
-export class SearchScenePipe extends BaseScenePipe<SceneSearchArgs> {
+export class Search<%= namePascal %>Pipe extends Base<%= namePascal %>Pipe<<%= namePascal %>SearchArgs> {
   rules(): ObjectSchema {
     const params = Joi.object({
       q: Joi.string().allow('').optional(),

@@ -1,9 +1,9 @@
 import { ContextType } from '@core/types';
-import { SceneCreateDto } from '../../dto';
+import { <%= namePascal %>CreateDto } from '../../dto';
 
-export class CreateManySceneCommand {
+export class CreateMany<%= namePascal %>Command {
   constructor(
-    public readonly rows: SceneCreateDto[],
+    public readonly rows: <%= namePascal %>CreateDto[],
     public readonly context: ContextType,
   ) {}
 }

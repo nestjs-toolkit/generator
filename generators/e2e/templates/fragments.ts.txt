@@ -1,0 +1,35 @@
+import { gql } from 'apollo-server';
+
+export const FRAGMENT_SCENE_MANAGER = gql`
+  fragment <%= namePascal %>ManagerFrag on <%= namePascal %>Manager {
+    _id
+    name
+    slug
+    position
+    thumb
+    cacheKey
+    enable
+    createdAt {
+      iso
+    }
+    updatedAt {
+      iso
+    }
+  }
+`;
+
+export const FRAGMENT_RESPONSE_SCENE_MANAGER = gql`
+  fragment <%= namePascal %>ResultFrag on <%= namePascal %>Response {
+    message
+    edges {
+      ...<%= namePascal %>ManagerFrag
+    }
+    pagination {
+      lastPage
+      page
+      perPage
+      total
+    }
+  }
+  ${FRAGMENT_SCENE_MANAGER}
+`;

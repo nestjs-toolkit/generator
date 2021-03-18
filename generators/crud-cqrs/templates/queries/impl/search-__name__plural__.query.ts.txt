@@ -1,5 +1,5 @@
-import { SceneSearchDto } from '../../dto';
+import { <%= namePascal %>SearchDto } from '../../dto';
 
-export class SearchScenesQuery {
-  constructor(public readonly dto: SceneSearchDto) {}
+export class Search<%= namePluralPascal %>Query {
+  constructor(public readonly dto: <%= namePascal %>SearchDto) {}
 }

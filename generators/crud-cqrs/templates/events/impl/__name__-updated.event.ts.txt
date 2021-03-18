@@ -1,12 +1,12 @@
 import { ContextType } from '@core/types';
-import { Scene } from '../../schemas';
-import { SceneUpdateDto } from '../../dto';
+import { <%= namePascal %> } from '../../schemas';
+import { <%= namePascal %>UpdateDto } from '../../dto';
 
-export class SceneUpdatedEvent {
+export class <%= namePascal %>UpdatedEvent {
   constructor(
-    public readonly model: Scene,
+    public readonly model: <%= namePascal %>,
     public readonly old: Record<string, any>,
-    public readonly dto: SceneUpdateDto,
+    public readonly dto: <%= namePascal %>UpdateDto,
     public readonly context: ContextType,
   ) {}
 }

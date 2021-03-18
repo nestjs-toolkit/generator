@@ -1,13 +1,13 @@
 import { IEventHandler, EventsHandler } from '@nestjs/cqrs';
 import { WinstonLogger } from '@nestjs-toolkit/winston-logger';
-import { SceneRemovedEvent } from '../impl';
+import { <%= namePascal %>RemovedEvent } from '../impl';
 
 // TODO refatorar para registrar enviar para logstash + kibana
-@EventsHandler(SceneRemovedEvent)
-export class SceneRemovedHandler implements IEventHandler<SceneRemovedEvent> {
+@EventsHandler(<%= namePascal %>RemovedEvent)
+export class <%= namePascal %>RemovedHandler implements IEventHandler<<%= namePascal %>RemovedEvent> {
   constructor(private readonly logger: WinstonLogger) {}
 
-  handle({ model, filter, context }: SceneRemovedEvent) {
+  handle({ model, filter, context }: <%= namePascal %>RemovedEvent) {
     const { req, user } = context;
     const causer = {
       collection: 'user_keycloak',
@@ -17,15 +17,15 @@ export class SceneRemovedHandler implements IEventHandler<SceneRemovedEvent> {
 
     this.logger
       .activity()
-      .tags('scenes')
-      .action('scenes:remove')
+      .tags('<%= namePlural %>')
+      .action('<%= namePlural %>:remove')
       .requestRpc(req)
       .causedBy(causer)
-      .performedOn(model, 'scenes')
+      .performedOn(model, '<%= namePlural %>')
       .namespaceById('*', 'manager')
       .withProperty('dto', filter)
       .withProperty('model', model.toJSON())
-      .contextIn(SceneRemovedHandler.name)
+      .contextIn(<%= namePascal %>RemovedHandler.name)
       .log('Cenário removido: :subject.name');
   }
 }

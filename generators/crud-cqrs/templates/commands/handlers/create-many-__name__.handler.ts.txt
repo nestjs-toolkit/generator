@@ -3,29 +3,29 @@ import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import clc from 'cli-color';
 import { ContextType } from '@core/types';
 import { RowValidationException } from '@core/exceptions';
-import { Scene } from '../../schemas';
-import { SceneCreateDto } from '../../dto';
-import { SceneCreatedEvent } from '../../events/impl';
-import { ScenesRepository } from '../../scenes.repository';
-import { CreateManySceneCommand } from '../impl';
+import { <%= namePascal %> } from '../../schemas';
+import { <%= namePascal %>CreateDto } from '../../dto';
+import { <%= namePascal %>CreatedEvent } from '../../events/impl';
+import { <%= namePluralPascal %>Repository } from '../../<%= namePlural %>.repository';
+import { CreateMany<%= namePascal %>Command } from '../impl';
 
-@CommandHandler(CreateManySceneCommand)
-export class CreateManySceneHandler
-  implements ICommandHandler<CreateManySceneCommand, Scene[]> {
-  private logger = new Logger(CreateManySceneHandler.name);
+@CommandHandler(CreateMany<%= namePascal %>Command)
+export class CreateMany<%= namePascal %>Handler
+  implements ICommandHandler<CreateMany<%= namePascal %>Command, <%= namePascal %>[]> {
+  private logger = new Logger(CreateMany<%= namePascal %>Handler.name);
 
   constructor(
     private readonly eventBus: EventBus,
-    private readonly repository: ScenesRepository,
+    private readonly repository: <%= namePluralPascal %>Repository,
   ) {}
 
-  async execute({ rows, context }: CreateManySceneCommand): Promise<Scene[]> {
+  async execute({ rows, context }: CreateMany<%= namePascal %>Command): Promise<<%= namePascal %>[]> {
     await this.checkDuplicateSlugsOrNames(rows);
 
     const promises = rows.map((dto, index) => {
       this.logger.debug(
         clc.greenBright(
-          `Init create scene ${index + 1}/${rows.length}: ${dto.name}`,
+          `Init create <%= nameCamel %> ${index + 1}/${rows.length}: ${dto.name}`,
         ),
       );
 
@@ -35,15 +35,15 @@ export class CreateManySceneHandler
   }
 
   private async create(
-    dto: SceneCreateDto,
+    dto: <%= namePascal %>CreateDto,
     context: ContextType,
-  ): Promise<Scene> {
-    const scene = await this.repository.save(dto);
-    this.eventBus.publish(new SceneCreatedEvent(scene, dto, context));
-    return scene;
+  ): Promise<<%= namePascal %>> {
+    const <%= nameCamel %> = await this.repository.save(dto);
+    this.eventBus.publish(new <%= namePascal %>CreatedEvent(<%= nameCamel %>, dto, context));
+    return <%= nameCamel %>;
   }
 
-  private async checkDuplicateSlugsOrNames(rows: SceneCreateDto[]) {
+  private async checkDuplicateSlugsOrNames(rows: <%= namePascal %>CreateDto[]) {
     const { names, slugs } = rows.reduce(
       (prev, row) => {
         prev.slugs.push(row.slug);

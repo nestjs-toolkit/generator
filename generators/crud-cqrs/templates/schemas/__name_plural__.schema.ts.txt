@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema({ collection: 'app_scenes', timestamps: true })
-export class Scene extends Document {
+@Schema({ collection: 'app_<%= namePlural %>', timestamps: true })
+export class <%= namePascal %> extends Document {
   @Prop({ unique: true, required: true })
   name: string;
 
@@ -23,4 +23,4 @@ export class Scene extends Document {
   updatedAt: string;
 }
 
-export const SceneSchema = SchemaFactory.createForClass(Scene);
+export const <%= namePascal %>Schema = SchemaFactory.createForClass(<%= namePascal %>);

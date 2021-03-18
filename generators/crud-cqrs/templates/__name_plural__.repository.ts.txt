@@ -3,24 +3,24 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { EdgesResponse } from '@core/types';
 import {
-  SceneConditionAndInput,
-  SceneFilterInput,
+  <%= namePascal %>ConditionAndInput,
+  <%= namePascal %>FilterInput,
 } from '@core/graphql/definitions';
 import { BaseRepository } from '@core/repositories';
-import { Scene } from './schemas';
-import { SceneCreateDto, SceneSearchDto } from './dto';
+import { <%= namePascal %> } from './schemas';
+import { <%= namePascal %>CreateDto, <%= namePascal %>SearchDto } from './dto';
 
-type MaybeScene = Scene | undefined;
-type ResultSearch = EdgesResponse<Scene>;
+type Maybe<%= namePascal %> = <%= namePascal %> | undefined;
+type ResultSearch = EdgesResponse<<%= namePascal %>>;
 
 @Injectable()
-export class ScenesRepository extends BaseRepository<Scene> {
-  constructor(@InjectModel(Scene.name) model: Model<Scene>) {
+export class <%= namePluralPascal %>Repository extends BaseRepository<<%= namePascal %>> {
+  constructor(@InjectModel(<%= namePascal %>.name) model: Model<<%= namePascal %>>) {
     super(model);
   }
 
   async search(
-    payload: SceneSearchDto,
+    payload: <%= namePascal %>SearchDto,
     projection?: any,
   ): Promise<ResultSearch> {
     const conditions = {};
@@ -37,7 +37,7 @@ export class ScenesRepository extends BaseRepository<Scene> {
       conditions['name'] = { $regex: q, $options: 'i' };
     }
 
-    const allowWhere: (keyof SceneConditionAndInput)[] = [
+    const allowWhere: (keyof <%= namePascal %>ConditionAndInput)[] = [
       'name',
       'cacheKey',
       'enable',
@@ -54,14 +54,14 @@ export class ScenesRepository extends BaseRepository<Scene> {
     return this.execWithPagination(conditions, projection, sort, perPage, page);
   }
 
-  async hasNameOrSlug(names: string[], slugs: string[]): Promise<MaybeScene> {
+  async hasNameOrSlug(names: string[], slugs: string[]): Promise<Maybe<%= namePascal %>> {
     return this.model.findOne({
       $or: [{ name: { $in: names } }, { slug: { $in: slugs } }],
     });
   }
 
-  async save(dto: SceneCreateDto): Promise<Scene> {
-    const scene: Scene = new this.model({
+  async save(dto: <%= namePascal %>CreateDto): Promise<<%= namePascal %>> {
+    const <%= nameCamel %>: <%= namePascal %> = new this.model({
       name: dto.name,
       slug: dto.slug, // TODO: make slug
       position: dto.position,
@@ -69,10 +69,10 @@ export class ScenesRepository extends BaseRepository<Scene> {
       thumb: 'a',
     });
 
-    return scene.save();
+    return <%= nameCamel %>.save();
   }
 
-  async findByFilters(filter: SceneFilterInput): Promise<Scene[]> {
+  async findByFilters(filter: <%= namePascal %>FilterInput): Promise<<%= namePascal %>[]> {
     const { forceAll, ids } = filter;
 
     if (forceAll) {
@@ -82,7 +82,7 @@ export class ScenesRepository extends BaseRepository<Scene> {
     return this.findByIds(ids);
   }
 
-  async allEnabled(): Promise<Scene[]> {
+  async allEnabled(): Promise<<%= namePascal %>[]> {
     return this.model.find({ enable: true }).sort({ position: -1 }).exec();
   }
 }

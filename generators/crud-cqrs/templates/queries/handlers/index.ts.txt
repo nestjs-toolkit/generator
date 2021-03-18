@@ -1,7 +1,7 @@
-import { FindSceneHandler } from './find-scene.handler';
-import { SearchScenesHandler } from './search-scenes.handler';
+import { Find<%= namePascal %>Handler } from './find-<%= nameCamel %>.handler';
+import { Search<%= namePluralPascal %>Handler } from './search-<%= namePlural %>.handler';
 
 export const QueryHandlers = [
-  FindSceneHandler,
-  SearchScenesHandler
+  Find<%= namePascal %>Handler,
+  Search<%= namePluralPascal %>Handler
 ];

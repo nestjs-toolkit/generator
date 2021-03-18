@@ -1,0 +1,186 @@
+import { Model } from 'mongoose';
+import { gql } from 'apollo-server';
+import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
+import { <%= namePascal %>CreateArgs, <%= namePascal %>CreateDto } from '../../src/<%= namePlural %>/dto';
+import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
+import { FRAGMENT_RESPONSE_SCENE_MANAGER } from './fragments';
+
+const MUTATION_CREATE_MANY = gql`
+  mutation create<%= namePascal %>Manager($rows: [<%= namePascal %>CreateInput]!) {
+    create<%= namePluralPascal %>Manger(rows: $rows) {
+      ...<%= namePascal %>ResultFrag
+    }
+  }
+  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+`;
+
+const MUTATION_CREATE_SINGLE = gql`
+  mutation create<%= namePascal %>Manager($row: <%= namePascal %>CreateInput!) {
+    create<%= namePluralPascal %>Manger(rows: [$row]) {
+      ...<%= namePascal %>ResultFrag
+    }
+  }
+  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+`;
+
+// TODO: create test test upload
+
+describe('GraphQl create <%= namePascal %> Manager (e2e)', () => {
+  let app: GraphqlTestSuite;
+  let <%= nameCamel %>Model: Model<<%= namePascal %>>;
+  let <%= nameCamel %>: <%= namePascal %>;
+
+  beforeAll(async () => {
+    app = new GraphqlTestSuite();
+    await app.init();
+
+    app.mockKeyCloak();
+
+    <%= nameCamel %>Model = app.get('<%= namePascal %>Model');
+
+    <%= nameCamel %> = await new <%= nameCamel %>Model({
+      name: 'Demo',
+      slug: 'demo',
+      thumb: 'demo.jpg',
+      position: 1,
+      enable: true,
+    }).save();
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('create > single success', async () => {
+    const row: <%= namePascal %>CreateDto = {
+      name: 'IOL demo 1',
+      slug: 'iol-demo-1',
+      position: 1,
+      enable: true,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request(MUTATION_CREATE_SINGLE, { row });
+
+    response
+      .assertNoErrors()
+      .assertCount(1, 'edges')
+      .assertPropertyExists('message')
+      .assertPropertyVal(row.name, 'edges.0.name');
+
+    const has = await <%= nameCamel %>Model.findOne({ slug: row.slug });
+    expect(has).toBeDefined();
+  });
+
+  it('create > many success', async () => {
+    const rows: <%= namePascal %>CreateDto[] = [
+      {
+        name: 'IOL demo 2',
+        slug: 'iol-demo-2',
+        position: 1,
+        enable: true,
+      },
+      {
+        name: 'IOL demo 3',
+        slug: 'iol-demo-3',
+        position: 2,
+        enable: true,
+      },
+    ];
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>CreateArgs>(MUTATION_CREATE_MANY, { rows });
+
+    response
+      .assertNoErrors()
+      .assertCount(2, 'edges')
+      .assertPropertyExists('message')
+      .assertPropertyVal(rows[0].name, 'edges.0.name')
+      .assertPropertyVal(rows[1].name, 'edges.1.name');
+
+    const has = await <%= nameCamel %>Model.find({
+      slug: { $in: [rows[0].slug, rows[1].slug] },
+    });
+    expect(has).toHaveLength(2);
+  });
+
+  it('create > many invalid args', async () => {
+    const rows: <%= namePascal %>CreateDto[] = [
+      {
+        name: 'a',
+        slug: 'a-A 1',
+        position: 1,
+        enable: true,
+      },
+    ];
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>CreateArgs>(MUTATION_CREATE_MANY, { rows });
+
+    response
+      .expectedValidationError()
+      .expectedFailedInputValidation(
+        'rows.0.name',
+        'string.min',
+        'campo "nome" deve conter pelo menos 3 caracteres',
+      )
+      .expectedFailedInputValidation('rows.0.slug', 'string.hostname');
+  });
+
+  it('create > duplicated slug', async () => {
+    const rows: <%= namePascal %>CreateDto[] = [
+      {
+        name: 'IOL demo 2',
+        slug: 'iol-demo-2',
+        position: 1,
+        enable: true,
+      },
+      {
+        name: 'IOL demo 3',
+        slug: <%= nameCamel %>.slug,
+        position: 2,
+        enable: true,
+      },
+    ];
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>CreateArgs>(MUTATION_CREATE_MANY, { rows });
+
+    response.expectedFailedInputValidation(
+      'rows.1.slug',
+      'string.unique',
+      'campo "slug" já está sendo utilizado!',
+    );
+  });
+
+  it('create > duplicated name', async () => {
+    const rows: <%= namePascal %>CreateDto[] = [
+      {
+        name: <%= nameCamel %>.name,
+        slug: 'iol-demo-22',
+        position: 1,
+        enable: true,
+      },
+      {
+        name: 'IOL demo 3',
+        slug: 'old-154',
+        position: 2,
+        enable: true,
+      },
+    ];
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>CreateArgs>(MUTATION_CREATE_MANY, { rows });
+
+    response.expectedFailedInputValidation(
+      'rows.0.name',
+      'string.unique',
+      'campo "nome" já está sendo utilizado!',
+    );
+  });
+});

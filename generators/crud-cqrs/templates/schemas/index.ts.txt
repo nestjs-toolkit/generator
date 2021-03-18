@@ -1,1 +1,1 @@
-export { Scene, SceneSchema } from './scene.schema';
+export { <%= namePascal %>, <%= namePascal %>Schema } from './<%= nameCamel %>.schema';

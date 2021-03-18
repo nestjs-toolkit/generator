@@ -1,2 +1,2 @@
-export { ScenesUserResolver } from './scenes-user.resolver';
-export { ScenesManagerResolver } from './scenes-manager.resolver';
+export { <%= namePluralPascal %>UserResolver } from './<%= namePlural %>-user.resolver';
+export { <%= namePluralPascal %>ManagerResolver } from './<%= namePlural %>-manager.resolver';

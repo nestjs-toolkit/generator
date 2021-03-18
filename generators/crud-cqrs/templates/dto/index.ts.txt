@@ -1,1 +1,1 @@
-export * from './scene.dto';
+export * from './<%= nameCamel %>.dto';

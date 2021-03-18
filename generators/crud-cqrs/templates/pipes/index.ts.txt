@@ -1,4 +1,4 @@
-export { CreateScenePipe } from './create-scene.pipe';
-export { RemoveScenePipe } from './remove-scene.pipe';
-export { SearchScenePipe } from './search-scene.pipe';
-export { UpdateScenePipe } from './update-scene.pipe';
+export { Create<%= namePascal %>Pipe } from './create-<%= nameCamel %>.pipe';
+export { Remove<%= namePascal %>Pipe } from './remove-<%= nameCamel %>.pipe';
+export { Search<%= namePascal %>Pipe } from './search-<%= nameCamel %>.pipe';
+export { Update<%= namePascal %>Pipe } from './update-<%= nameCamel %>.pipe';

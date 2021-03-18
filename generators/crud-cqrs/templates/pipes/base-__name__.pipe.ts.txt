@@ -2,7 +2,7 @@ import Joi, { ObjectSchema } from 'joi';
 import { BaseValidationPipe, DataRecord } from '@core/validations';
 import { JoiObjectId } from '@core/validations/exetensions';
 
-export abstract class BaseScenePipe<Args> extends BaseValidationPipe<Args> {
+export abstract class Base<%= namePascal %>Pipe<Args> extends BaseValidationPipe<Args> {
   messages(): DataRecord {
     return {};
   }

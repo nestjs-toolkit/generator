@@ -1,0 +1,236 @@
+import { gql } from 'apollo-server';
+import { Model } from 'mongoose';
+import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
+import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
+import { FRAGMENT_RESPONSE_SCENE_MANAGER } from './fragments';
+import {
+  <%= namePascal %>UpdateDto,
+  <%= namePascal %>UpdateArgs,
+  <%= namePascal %>FilterDto,
+} from '../../src/<%= namePlural %>/dto';
+
+const MUTATION_UPDATE = gql`
+  mutation update<%= namePascal %>Manager(
+    $filter: <%= namePascal %>FilterInput!
+    $input: <%= namePascal %>UpdateDataInput!
+  ) {
+    update<%= namePluralPascal %>Manger(filter: $filter, input: $input) {
+      ...<%= namePascal %>ResultFrag
+    }
+  }
+  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+`;
+
+// TODO: create test test upload
+
+describe('GraphQl update <%= namePascal %> Manager (e2e)', () => {
+  let app: GraphqlTestSuite;
+  let <%= nameCamel %>Model: Model<<%= namePascal %>>;
+  let <%= namePlural %>: <%= namePascal %>[] = [];
+
+  beforeAll(async () => {
+    app = new GraphqlTestSuite();
+    await app.init();
+
+    app.mockKeyCloak();
+
+    <%= nameCamel %>Model = app.get('<%= namePascal %>Model');
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  beforeEach(async () => {
+    await <%= nameCamel %>Model.deleteMany({});
+
+    <%= namePlural %> = [];
+
+    <%= namePlural %>[0] = await new <%= nameCamel %>Model({
+      name: 'Demo-0',
+      slug: 'demo-0',
+      thumb: 'demo.jpg',
+      position: 1,
+      enable: false,
+    }).save();
+
+    <%= namePlural %>[1] = await new <%= nameCamel %>Model({
+      name: 'Demo-1',
+      slug: 'demo-1',
+      thumb: 'demo.jpg',
+      position: 1,
+      enable: true,
+    }).save();
+  });
+
+  it('update > single success', async () => {
+    const input: <%= namePascal %>UpdateDto = {
+      enable: true,
+    };
+
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [<%= namePlural %>[0]._id],
+      forceAll: false,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>UpdateArgs>(MUTATION_UPDATE, { filter, input });
+
+    response
+      .assertNoErrors()
+      .assertCount(1, 'edges')
+      .assertPropertyVal('Cenário atualizado com sucesso!', 'message')
+      .assertPropertyVal(<%= namePlural %>[0].name, 'edges.0.name')
+      .assertPropertyVal(input.enable, 'edges.0.enable');
+
+    const has = await <%= nameCamel %>Model.findOne({ _id: <%= namePlural %>[0]._id, enable: false });
+
+    expect(has).toBeDefined();
+  });
+
+  it('update > forceAll=true success', async () => {
+    const input: <%= namePascal %>UpdateDto = {
+      enable: true,
+    };
+
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [],
+      forceAll: true,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>UpdateArgs>(MUTATION_UPDATE, { filter, input });
+
+    response
+      .assertNoErrors()
+      .assertCount(2, 'edges')
+      .assertPropertyVal('Foram atualizados 2 cenários!', 'message')
+      .assertPropertyVal(<%= namePlural %>[0].name, 'edges.0.name')
+      .assertPropertyVal(input.enable, 'edges.0.enable')
+      .assertPropertyVal(<%= namePlural %>[1].name, 'edges.1.name')
+      .assertPropertyVal(input.enable, 'edges.1.enable');
+
+    const has = await <%= nameCamel %>Model.find({ enable: true });
+
+    expect(has).toHaveLength(2);
+  });
+
+  it('update > invalid args', async () => {
+    const input: <%= namePascal %>UpdateDto = {
+      enable: true,
+    };
+
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [],
+      forceAll: false,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>UpdateArgs>(MUTATION_UPDATE, { filter, input });
+
+    response.expectedFailedInputValidation('filter.ids', 'array.min');
+  });
+
+  it('update > by ids success success', async () => {
+    const input: <%= namePascal %>UpdateDto = {
+      enable: true,
+    };
+
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [<%= namePlural %>[0]._id, <%= namePlural %>[1]._id],
+      forceAll: false,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>UpdateArgs>(MUTATION_UPDATE, { filter, input });
+
+    response
+      .assertNoErrors()
+      .assertCount(2, 'edges')
+      .assertPropertyVal('Foram atualizados 2 cenários!', 'message')
+      .assertPropertyVal(<%= namePlural %>[0].name, 'edges.0.name')
+      .assertPropertyVal(input.enable, 'edges.0.enable')
+      .assertPropertyVal(<%= namePlural %>[1].name, 'edges.1.name')
+      .assertPropertyVal(input.enable, 'edges.1.enable');
+
+    const has = await <%= nameCamel %>Model.find({ enable: true });
+    expect(has).toHaveLength(2);
+  });
+
+  it('update > invalid args', async () => {
+    const input: <%= namePascal %>UpdateDto = {
+      name: 'a',
+      slug: 'a-A 1',
+      position: 1,
+      enable: true,
+    };
+
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [],
+      forceAll: false,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>UpdateArgs>(MUTATION_UPDATE, { input, filter });
+
+    response
+      .expectedValidationError()
+      .expectedFailedInputValidation(
+        'input.name',
+        'string.min',
+        'campo "nome" deve conter pelo menos 3 caracteres',
+      )
+      .expectedFailedInputValidation('input.slug', 'string.hostname');
+  });
+
+  it('update > duplicated slug', async () => {
+    const input: <%= namePascal %>UpdateDto = {
+      slug: <%= namePlural %>[1].slug,
+      position: 1,
+      enable: true,
+    };
+
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [],
+      forceAll: true,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>UpdateArgs>(MUTATION_UPDATE, { input, filter });
+
+    response.expectedFailedInputValidation(
+      'input.*',
+      'string.unique',
+      'campo "slug ou nome" já está sendo utilizado!',
+    );
+  });
+
+  it('update > duplicated name', async () => {
+    const input: <%= namePascal %>UpdateDto = {
+      name: <%= namePlural %>[1].name,
+      position: 1,
+      enable: true,
+    };
+
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [],
+      forceAll: true,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>UpdateArgs>(MUTATION_UPDATE, { input, filter });
+
+    response.expectedFailedInputValidation(
+      'input.*',
+      'string.unique',
+      'campo "slug ou nome" já está sendo utilizado!',
+    );
+  });
+});

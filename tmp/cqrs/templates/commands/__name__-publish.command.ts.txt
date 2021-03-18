@@ -1,9 +1,0 @@
-import { <%= namePascal %> } from '../schemas';
-import { ActionsEnum } from '../../../graphql';
-
-export class <%= namePascal %>PublishCommand {
-  constructor(
-    public readonly model: <%= namePascal %>,
-    public readonly action: ActionsEnum,
-  ) {}
-}

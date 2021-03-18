@@ -1,2 +1,2 @@
-export { FindSceneQuery } from './find-scene.query';
-export { SearchScenesQuery } from './search-scenes.query';
+export { Find<%= namePascal %>Query } from './find-<%= nameCamel %>.query';
+export { Search<%= namePluralPascal %>Query } from './search-<%= namePlural %>.query';

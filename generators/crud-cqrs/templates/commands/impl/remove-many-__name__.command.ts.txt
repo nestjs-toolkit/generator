@@ -1,9 +1,9 @@
-import { SceneFilterDto } from '../../dto';
 import { ContextType } from '@core/types';
+import { <%= namePascal %>FilterDto } from '../../dto';
 
-export class RemoveManySceneCommand {
+export class RemoveMany<%= namePascal %>Command {
   constructor(
-    public readonly filter: SceneFilterDto,
+    public readonly filter: <%= namePascal %>FilterDto,
     public readonly context: ContextType,
   ) {}
 }

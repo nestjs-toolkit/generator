@@ -5,23 +5,23 @@ import { CommandHandlers } from './commands/handlers';
 import { EventHandlers } from './events/handlers';
 import { QueryHandlers } from './queries/handlers';
 import { SagaListeners } from './sagas';
-import { ScenesManagerResolver, ScenesUserResolver } from './resolvers';
-import { Scene, SceneSchema } from './schemas';
-import { ScenesRepository } from './scenes.repository';
+import { <%= namePluralPascal %>ManagerResolver, <%= namePluralPascal %>UserResolver } from './resolvers';
+import { <%= namePascal %>, <%= namePascal %>Schema } from './schemas';
+import { <%= namePluralPascal %>Repository } from './<%= namePlural %>.repository';
 
 @Module({
   imports: [
     CqrsModule,
-    MongooseModule.forFeature([{ name: Scene.name, schema: SceneSchema }]),
+    MongooseModule.forFeature([{ name: <%= namePascal %>.name, schema: <%= namePascal %>Schema }]),
   ],
   providers: [
-    ScenesUserResolver,
-    ScenesManagerResolver,
-    ScenesRepository,
+    <%= namePluralPascal %>UserResolver,
+    <%= namePluralPascal %>ManagerResolver,
+    <%= namePluralPascal %>Repository,
     ...CommandHandlers,
     ...EventHandlers,
     ...QueryHandlers,
     ...SagaListeners,
   ],
 })
-export class ScenesModule {}
+export class <%= namePluralPascal %>Module {}

@@ -4,20 +4,20 @@ import clc from 'cli-color';
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import {
-  SceneCreatedEvent,
-  SceneRemovedEvent,
-  SceneUpdatedEvent,
+  <%= namePascal %>CreatedEvent,
+  <%= namePascal %>RemovedEvent,
+  <%= namePascal %>UpdatedEvent,
 } from '../events/impl';
 
 @Injectable()
-export class ScenesSagas {
+export class <%= namePluralPascal %>Sagas {
   @Saga()
-  sceneCreated = (events$: Observable<any>): Observable<ICommand> => {
+  <%= nameCamel %>Created = (events$: Observable<any>): Observable<ICommand> => {
     return events$.pipe(
-      ofType(SceneCreatedEvent),
+      ofType(<%= namePascal %>CreatedEvent),
       mergeMap((event) => {
         console.log(
-          clc.redBright(`[ScenesSagas]: created #${event.model._id}`),
+          clc.redBright(`[<%= namePluralPascal %>Sagas]: created #${event.model._id}`),
         );
         return [];
       }),
@@ -25,12 +25,12 @@ export class ScenesSagas {
   };
 
   @Saga()
-  sceneUpdated = (events$: Observable<any>): Observable<ICommand> => {
+  <%= nameCamel %>Updated = (events$: Observable<any>): Observable<ICommand> => {
     return events$.pipe(
-      ofType(SceneUpdatedEvent),
+      ofType(<%= namePascal %>UpdatedEvent),
       mergeMap((event) => {
         console.log(
-          clc.redBright(`[ScenesSagas]: updated #${event.model._id}`),
+          clc.redBright(`[<%= namePluralPascal %>Sagas]: updated #${event.model._id}`),
         );
         return [];
       }),
@@ -38,12 +38,12 @@ export class ScenesSagas {
   };
 
   @Saga()
-  sceneRemoved = (events$: Observable<any>): Observable<ICommand> => {
+  <%= nameCamel %>Removed = (events$: Observable<any>): Observable<ICommand> => {
     return events$.pipe(
-      ofType(SceneRemovedEvent),
+      ofType(<%= namePascal %>RemovedEvent),
       mergeMap((event) => {
         console.log(
-          clc.redBright(`[ScenesSagas]: removed #${event.model._id}`),
+          clc.redBright(`[<%= namePluralPascal %>Sagas]: removed #${event.model._id}`),
         );
         return [];
       }),

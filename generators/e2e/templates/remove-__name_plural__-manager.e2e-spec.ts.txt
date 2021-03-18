@@ -1,0 +1,108 @@
+import { gql } from 'apollo-server';
+import { Model } from 'mongoose';
+import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
+import { <%= namePascal %>FilterDto, <%= namePascal %>RemoveArgs } from 'src/<%= namePlural %>/dto';
+import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
+import { FRAGMENT_RESPONSE_SCENE_MANAGER } from './fragments';
+
+const MUTATION_REMOVE = gql`
+  mutation remove<%= namePascal %>Manager($filter: <%= namePascal %>FilterInput!) {
+    remove<%= namePluralPascal %>Manger(filter: $filter) {
+      ...<%= namePascal %>ResultFrag
+    }
+  }
+  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+`;
+
+describe('GraphQl remove <%= namePascal %> Manager (e2e)', () => {
+  let app: GraphqlTestSuite;
+  let <%= nameCamel %>Model: Model<<%= namePascal %>>;
+  let <%= namePlural %>: <%= namePascal %>[] = [];
+
+  beforeAll(async () => {
+    app = new GraphqlTestSuite();
+    await app.init();
+
+    app.mockKeyCloak();
+
+    <%= nameCamel %>Model = app.get('<%= namePascal %>Model');
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  beforeEach(async () => {
+    await <%= nameCamel %>Model.deleteMany({});
+
+    <%= namePlural %> = [];
+
+    <%= namePlural %>[0] = await new <%= nameCamel %>Model({
+      name: 'Demo-0',
+      slug: 'demo-0',
+      thumb: 'demo.jpg',
+      position: 1,
+      enable: true,
+    }).save();
+
+    <%= namePlural %>[1] = await new <%= nameCamel %>Model({
+      name: 'Demo-1',
+      slug: 'demo-1',
+      thumb: 'demo.jpg',
+      position: 1,
+      enable: true,
+    }).save();
+  });
+
+  it('create > invalid args', async () => {
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [],
+      forceAll: false,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>RemoveArgs>(MUTATION_REMOVE, { filter });
+
+    response.expectedFailedInputValidation('filter.ids', 'array.min');
+  });
+
+  it('create > remove all success', async () => {
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [],
+      forceAll: true,
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>RemoveArgs>(MUTATION_REMOVE, { filter });
+
+    response
+      .assertNoErrors()
+      .assertCount(2, 'edges')
+      .assertPropertyExists('message')
+      .assertPropertyVal(<%= namePlural %>[0].name, 'edges.0.name');
+
+    const has = await <%= nameCamel %>Model.count();
+    expect(has).toBe(0);
+  });
+
+  it('create > remove by ids success', async () => {
+    const filter: <%= namePascal %>FilterDto = {
+      ids: [<%= namePlural %>[1]._id],
+    };
+
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>RemoveArgs>(MUTATION_REMOVE, { filter });
+
+    response
+      .assertNoErrors()
+      .assertCount(1, 'edges')
+      .assertPropertyExists('message')
+      .assertPropertyVal(<%= namePlural %>[1].name, 'edges.0.name');
+
+    const has = await <%= nameCamel %>Model.findById(<%= namePlural %>[1]._id);
+    expect(has).toBeNull();
+  });
+});

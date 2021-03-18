@@ -1,1 +1,1 @@
-export { ScenesModule } from './scenes.module';
+export { <%= namePluralPascal %>Module } from './<%= namePlural %>.module';

@@ -2,34 +2,34 @@ import { Logger } from '@nestjs/common';
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import clc from 'cli-color';
 import { ContextType } from '@core/types';
-import { ScenesRepository } from '../../scenes.repository';
-import { Scene } from '../../schemas';
-import { SceneRemovedEvent } from '../../events/impl';
-import { SceneFilterDto } from '../../dto';
-import { RemoveManySceneCommand } from '../impl';
+import { <%= namePluralPascal %>Repository } from '../../<%= namePlural %>.repository';
+import { <%= namePascal %> } from '../../schemas';
+import { <%= namePascal %>RemovedEvent } from '../../events/impl';
+import { <%= namePascal %>FilterDto } from '../../dto';
+import { RemoveMany<%= namePascal %>Command } from '../impl';
 
-type Response = { nModified: number; results: Scene[] };
+type Response = { nModified: number; results: <%= namePascal %>[] };
 
-@CommandHandler(RemoveManySceneCommand)
-export class RemoveManySceneHandler
-  implements ICommandHandler<RemoveManySceneCommand> {
-  private logger = new Logger(RemoveManySceneHandler.name);
+@CommandHandler(RemoveMany<%= namePascal %>Command)
+export class RemoveMany<%= namePascal %>Handler
+  implements ICommandHandler<RemoveMany<%= namePascal %>Command> {
+  private logger = new Logger(RemoveMany<%= namePascal %>Handler.name);
 
   constructor(
     private readonly eventBus: EventBus,
-    private readonly repository: ScenesRepository,
+    private readonly repository: <%= namePluralPascal %>Repository,
   ) {}
 
   async execute({
     filter,
     context,
-  }: RemoveManySceneCommand): Promise<Response> {
+  }: RemoveMany<%= namePascal %>Command): Promise<Response> {
     const models = await this.repository.findByFilters(filter);
 
     const promises = models.map((model, index) => {
       this.logger.debug(
         clc.redBright(
-          `Init remove scene ${index + 1}/${models.length}: ${model.name}`,
+          `Init remove <%= nameCamel %> ${index + 1}/${models.length}: ${model.name}`,
         ),
       );
 
@@ -46,10 +46,10 @@ export class RemoveManySceneHandler
   }
 
   private async remove(
-    model: Scene,
-    filter: SceneFilterDto,
+    model: <%= namePascal %>,
+    filter: <%= namePascal %>FilterDto,
     context: ContextType,
-  ): Promise<Scene | null> {
+  ): Promise<<%= namePascal %> | null> {
     try {
       await model.remove();
     } catch (e) {
@@ -57,7 +57,7 @@ export class RemoveManySceneHandler
       return null;
     }
 
-    this.eventBus.publish(new SceneRemovedEvent(model, filter, context));
+    this.eventBus.publish(new <%= namePascal %>RemovedEvent(model, filter, context));
 
     return model;
   }
