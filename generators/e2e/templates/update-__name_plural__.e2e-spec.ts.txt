@@ -2,7 +2,7 @@ import { gql } from 'apollo-server';
 import { Model } from 'mongoose';
 import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
-import { FRAGMENT_RESPONSE_SCENE_MANAGER } from './fragments';
+import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 import {
   <%= namePascal %>UpdateDto,
   <%= namePascal %>UpdateArgs,
@@ -10,20 +10,18 @@ import {
 } from '../../src/<%= namePlural %>/dto';
 
 const MUTATION_UPDATE = gql`
-  mutation update<%= namePascal %>Manager(
+  mutation update<%= namePascal %>(
     $filter: <%= namePascal %>FilterInput!
     $input: <%= namePascal %>UpdateDataInput!
   ) {
-    update<%= namePluralPascal %>Manger(filter: $filter, input: $input) {
+    update<%= namePluralPascal %>(filter: $filter, input: $input) {
       ...<%= namePascal %>ResultFrag
     }
   }
-  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+  ${FRAGMENT_RESPONSE_<%= nameUp %>}
 `;
 
-// TODO: create test test upload
-
-describe('GraphQl update <%= namePascal %> Manager (e2e)', () => {
+describe('GraphQl update <%= namePascal %> (e2e)', () => {
   let app: GraphqlTestSuite;
   let <%= nameCamel %>Model: Model<<%= namePascal %>>;
   let <%= namePlural %>: <%= namePascal %>[] = [];
@@ -86,7 +84,7 @@ describe('GraphQl update <%= namePascal %> Manager (e2e)', () => {
 
     const has = await <%= nameCamel %>Model.findOne({ _id: <%= namePlural %>[0]._id, enable: false });
 
-    expect(has).toBeDefined();
+   expect(!!has).toBeTruthy();
   });
 
   it('update > forceAll=true success', async () => {
@@ -117,7 +115,7 @@ describe('GraphQl update <%= namePascal %> Manager (e2e)', () => {
     expect(has).toHaveLength(2);
   });
 
-  it('update > invalid args', async () => {
+  it('update > invalid min qt ids', async () => {
     const input: <%= namePascal %>UpdateDto = {
       enable: true,
     };

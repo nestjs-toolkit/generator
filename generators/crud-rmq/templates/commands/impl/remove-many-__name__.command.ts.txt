@@ -1,0 +1,9 @@
+import { ContextType } from '@core/types';
+import { <%= namePascal %>FilterDto } from '../../dto';
+
+export class RemoveMany<%= namePascal %>Command {
+  constructor(
+    public readonly filter: <%= namePascal %>FilterDto,
+    public readonly context: ContextType,
+  ) {}
+}

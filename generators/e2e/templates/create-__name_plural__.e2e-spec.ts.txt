@@ -3,29 +3,27 @@ import { gql } from 'apollo-server';
 import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
 import { <%= namePascal %>CreateArgs, <%= namePascal %>CreateDto } from '../../src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
-import { FRAGMENT_RESPONSE_SCENE_MANAGER } from './fragments';
+import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
 const MUTATION_CREATE_MANY = gql`
-  mutation create<%= namePascal %>Manager($rows: [<%= namePascal %>CreateInput]!) {
-    create<%= namePluralPascal %>Manger(rows: $rows) {
+  mutation create<%= namePascal %>($rows: [<%= namePascal %>CreateInput]!) {
+    create<%= namePluralPascal %>(rows: $rows) {
       ...<%= namePascal %>ResultFrag
     }
   }
-  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+  ${FRAGMENT_RESPONSE_<%= nameUp %>}
 `;
 
 const MUTATION_CREATE_SINGLE = gql`
-  mutation create<%= namePascal %>Manager($row: <%= namePascal %>CreateInput!) {
-    create<%= namePluralPascal %>Manger(rows: [$row]) {
+  mutation create<%= namePascal %>($row: <%= namePascal %>CreateInput!) {
+    create<%= namePluralPascal %>(rows: [$row]) {
       ...<%= namePascal %>ResultFrag
     }
   }
-  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+  ${FRAGMENT_RESPONSE_<%= nameUp %>}
 `;
 
-// TODO: create test test upload
-
-describe('GraphQl create <%= namePascal %> Manager (e2e)', () => {
+describe('GraphQl create <%= namePascal %> (e2e)', () => {
   let app: GraphqlTestSuite;
   let <%= nameCamel %>Model: Model<<%= namePascal %>>;
   let <%= nameCamel %>: <%= namePascal %>;
@@ -70,7 +68,8 @@ describe('GraphQl create <%= namePascal %> Manager (e2e)', () => {
       .assertPropertyVal(row.name, 'edges.0.name');
 
     const has = await <%= nameCamel %>Model.findOne({ slug: row.slug });
-    expect(has).toBeDefined();
+
+    expect(!!has).toBeTruthy();
   });
 
   it('create > many success', async () => {
@@ -103,6 +102,7 @@ describe('GraphQl create <%= namePascal %> Manager (e2e)', () => {
     const has = await <%= nameCamel %>Model.find({
       slug: { $in: [rows[0].slug, rows[1].slug] },
     });
+
     expect(has).toHaveLength(2);
   });
 

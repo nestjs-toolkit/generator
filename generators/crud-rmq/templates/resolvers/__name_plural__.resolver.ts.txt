@@ -48,7 +48,7 @@ export class <%= namePluralPascal %>Resolver {
 
     return {
       edges: result,
-      message: '<%= namePascal %> registrado com sucesso',
+      message: 'Cenário registrado com sucesso',
     };
   }
 
@@ -76,14 +76,14 @@ export class <%= namePluralPascal %>Resolver {
     if (nModified === 0) {
       return {
         edges: results,
-        message: 'Nenhuma <%= namePascal %> foi encontrada!',
+        message: 'Nenhuma cenário foi encontrada!',
       };
     }
 
     const message =
       nModified === 1
-        ? '<%= namePascal %> atualizado com sucesso!'
-        : `Foram atualizados ${nModified} <%= namePluralPascal %>!`;
+        ? 'Cenário atualizado com sucesso!'
+        : `Foram atualizados ${nModified} cenários!`;
 
     return {
       edges: results,
@@ -103,14 +103,14 @@ export class <%= namePluralPascal %>Resolver {
     if (nModified === 0) {
       return {
         edges: results,
-        message: 'Nenhuma <%= namePascal %> foi removido!',
+        message: 'Nenhuma cenário foi removido!',
       };
     }
 
     const message =
       nModified === 1
-        ? '<%= namePascal %> removido com sucesso!'
-        : `Foram removidos ${nModified} <%= namePluralPascal %>!`;
+        ? 'Cenário removido com sucesso!'
+        : `Foram removidos ${nModified} cenários!`;
 
     return {
       edges: results,
@@ -118,8 +118,8 @@ export class <%= namePluralPascal %>Resolver {
     };
   }
 
-//  @ResolveField('cacheKey')
-//  cacheKey(@Parent() model: <%= namePascal %>) {
-//    return `<%= nameCamel %>:${model.slug}`;
-//  }
+  @ResolveField('cacheKey')
+  cacheKey(@Parent() model: <%= namePascal %>) {
+    return `<%= nameCamel %>:${model.slug}`;
+  }
 }

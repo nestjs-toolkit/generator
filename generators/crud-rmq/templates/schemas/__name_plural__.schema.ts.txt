@@ -1,0 +1,26 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+
+@Schema({ collection: 'app_<%= namePlural %>', timestamps: true })
+export class <%= namePascal %> extends Document {
+  @Prop({ unique: true, required: true })
+  name: string;
+
+  @Prop({ unique: true, required: true })
+  slug: string;
+
+  @Prop({ required: true })
+  enable: boolean;
+
+  @Prop({ required: true })
+  thumb: string;
+
+  @Prop({ required: true })
+  position: number;
+
+  createdAt: string;
+
+  updatedAt: string;
+}
+
+export const <%= namePascal %>Schema = SchemaFactory.createForClass(<%= namePascal %>);

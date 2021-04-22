@@ -1,0 +1,9 @@
+import { <%= namePascal %>CreatedHandler } from './<%= nameCamel %>-created.handler';
+import { <%= namePascal %>UpdatedHandler } from './<%= nameCamel %>-updated.handler';
+import { <%= namePascal %>RemovedHandler } from './<%= nameCamel %>-removed.handler';
+
+export const EventHandlers = [
+  <%= namePascal %>CreatedHandler,
+  <%= namePascal %>RemovedHandler,
+  <%= namePascal %>UpdatedHandler,
+];

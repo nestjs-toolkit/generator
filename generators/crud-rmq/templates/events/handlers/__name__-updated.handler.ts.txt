@@ -35,6 +35,6 @@ export class <%= namePascal %>UpdatedHandler implements IEventHandler<<%= namePa
       .withProperty('diff', detailedDiff)
       .withProperty('model', model.toJSON())
       .contextIn(<%= namePascal %>UpdatedHandler.name)
-      .log('<%= name %> atualizado: :subject.name');
+      .log('cenário atualizado: :subject.name');
   }
 }

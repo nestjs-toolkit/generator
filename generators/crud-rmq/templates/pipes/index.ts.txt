@@ -1,0 +1,4 @@
+export { Create<%= namePascal %>Pipe } from './create-<%= nameCamel %>.pipe';
+export { Remove<%= namePascal %>Pipe } from './remove-<%= nameCamel %>.pipe';
+export { Search<%= namePascal %>Pipe } from './search-<%= nameCamel %>.pipe';
+export { Update<%= namePascal %>Pipe } from './update-<%= nameCamel %>.pipe';

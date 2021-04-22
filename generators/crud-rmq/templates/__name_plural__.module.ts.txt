@@ -5,7 +5,7 @@ import { CommandHandlers } from './commands/handlers';
 import { EventHandlers } from './events/handlers';
 import { QueryHandlers } from './queries/handlers';
 import { SagaListeners } from './sagas';
-import { <%= namePluralPascal %>Resolver } from './resolvers';
+import { <%= namePluralPascal %>ManagerResolver, <%= namePluralPascal %>UserResolver } from './resolvers';
 import { <%= namePascal %>, <%= namePascal %>Schema } from './schemas';
 import { <%= namePluralPascal %>Repository } from './<%= namePlural %>.repository';
 
@@ -15,7 +15,8 @@ import { <%= namePluralPascal %>Repository } from './<%= namePlural %>.repositor
     MongooseModule.forFeature([{ name: <%= namePascal %>.name, schema: <%= namePascal %>Schema }]),
   ],
   providers: [
-    <%= namePluralPascal %>Resolver,
+    <%= namePluralPascal %>UserResolver,
+    <%= namePluralPascal %>ManagerResolver,
     <%= namePluralPascal %>Repository,
     ...CommandHandlers,
     ...EventHandlers,

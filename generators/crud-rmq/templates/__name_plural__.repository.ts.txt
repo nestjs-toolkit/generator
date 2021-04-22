@@ -39,7 +39,9 @@ export class <%= namePluralPascal %>Repository extends BaseRepository<<%= namePa
 
     const allowWhere: (keyof <%= namePascal %>ConditionAndInput)[] = [
       'name',
+      'cacheKey',
       'enable',
+      'position',
       'slug',
     ];
 
@@ -55,14 +57,16 @@ export class <%= namePluralPascal %>Repository extends BaseRepository<<%= namePa
   async hasNameOrSlug(names: string[], slugs: string[]): Promise<Maybe<%= namePascal %>> {
     return this.model.findOne({
       $or: [{ name: { $in: names } }, { slug: { $in: slugs } }],
-    }) as any;
+    });
   }
 
   async save(dto: <%= namePascal %>CreateDto): Promise<<%= namePascal %>> {
     const <%= nameCamel %>: <%= namePascal %> = new this.model({
       name: dto.name,
       slug: dto.slug, // TODO: make slug
-      enable: dto.enable
+      position: dto.position,
+      enable: dto.enable,
+      thumb: 'a',
     });
 
     return <%= nameCamel %>.save();
@@ -72,9 +76,13 @@ export class <%= namePluralPascal %>Repository extends BaseRepository<<%= namePa
     const { forceAll, ids } = filter;
 
     if (forceAll) {
-      return this.model.find() as any;
+      return this.model.find();
     }
 
     return this.findByIds(ids);
+  }
+
+  async allEnabled(): Promise<<%= namePascal %>[]> {
+    return this.model.find({ enable: true }).sort({ position: -1 }).exec();
   }
 }

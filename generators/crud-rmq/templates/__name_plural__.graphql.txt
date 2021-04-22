@@ -1,13 +1,16 @@
 input Sort<%= namePascal %>Input {
     name: SortOrderEnum
     enable: SortOrderEnum
+    position: SortOrderEnum
     createdAt: SortOrderEnum
     updatedAt: SortOrderEnum
 }
 
 input <%= namePascal %>ConditionAndInput {
     name: String
+    position: Int
     slug: String
+    cacheKey: String
     enable: Boolean
 }
 
@@ -20,8 +23,10 @@ input <%= namePascal %>SearchInput {
     and: <%= namePascal %>ConditionAndInput
 }
 
+# TODO: mudar file para obrigatorio
 input <%= namePascal %>CreateInput {
     name: String!
+    file: Upload
     position: Int!
     slug: String!
     enable: Boolean!
@@ -34,6 +39,7 @@ input <%= namePascal %>FilterInput {
 
 input <%= namePascal %>UpdateDataInput {
     name: String
+    file: Upload
     position: Int
     slug: String
     enable: Boolean
@@ -41,33 +47,36 @@ input <%= namePascal %>UpdateDataInput {
 
 type <%= namePascal %>Response {
     message: String
-    edges: [<%= namePascal %>]!
+    edges: [<%= namePascal %>Manager]!
     pagination: Pagination
 }
 
 #type <%= namePascal %>OnChanges {
 #    action: ActionsEnum!
-#    result: [<%= namePascal %>]!
+#    result: [<%= namePascal %>Manager]!
 #}
 
-type <%= namePascal %> {
+type <%= namePascal %>Manager {
     _id: ID!
     name: String!
+    thumb: String!
+    position: Int!
     slug: String!
+    cacheKey: String!
     enable: Boolean!
     createdAt: CustomDate!
     updatedAt: CustomDate!
 }
 
 type Query {
-    <%= nameCamel %>(id: ID!): <%= namePascal %>
-    <%= namePlural %>(params: <%= namePascal %>SearchInput): <%= namePascal %>Response!
+    <%= nameCamel %>Manger(id: String!): <%= namePascal %>Manager
+    <%= namePlural %>Manger(params: <%= namePascal %>SearchInput): <%= namePascal %>Response!
 }
 
 type Mutation {
-    create<%= namePluralPascal %>(rows: [<%= namePascal %>CreateInput]!): <%= namePascal %>Response!
-    update<%= namePluralPascal %>(filter: <%= namePascal %>FilterInput!, input: <%= namePascal %>UpdateDataInput!): <%= namePascal %>Response!
-    remove<%= namePluralPascal %>(filter: <%= namePascal %>FilterInput!): <%= namePascal %>Response!
+    create<%= namePluralPascal %>Manger(rows: [<%= namePascal %>CreateInput]!): <%= namePascal %>Response!
+    update<%= namePluralPascal %>Manger(filter: <%= namePascal %>FilterInput!, input: <%= namePascal %>UpdateDataInput!): <%= namePascal %>Response!
+    remove<%= namePluralPascal %>Manger(filter: <%= namePascal %>FilterInput!): <%= namePascal %>Response!
 }
 
 #type Subscription {

@@ -1,0 +1,3 @@
+import { <%= namePluralPascal %>Sagas } from './<%= namePlural %>.sagas';
+
+export const SagaListeners = [<%= namePluralPascal %>Sagas];

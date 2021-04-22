@@ -3,18 +3,18 @@ import { Model } from 'mongoose';
 import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
 import { <%= namePascal %>FilterDto, <%= namePascal %>RemoveArgs } from 'src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
-import { FRAGMENT_RESPONSE_SCENE_MANAGER } from './fragments';
+import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
 const MUTATION_REMOVE = gql`
-  mutation remove<%= namePascal %>Manager($filter: <%= namePascal %>FilterInput!) {
-    remove<%= namePluralPascal %>Manger(filter: $filter) {
+  mutation remove<%= namePascal %>($filter: <%= namePascal %>FilterInput!) {
+    remove<%= namePluralPascal %>(filter: $filter) {
       ...<%= namePascal %>ResultFrag
     }
   }
-  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+  ${FRAGMENT_RESPONSE_<%= nameUp %>}
 `;
 
-describe('GraphQl remove <%= namePascal %> Manager (e2e)', () => {
+describe('GraphQl remove <%= namePascal %> (e2e)', () => {
   let app: GraphqlTestSuite;
   let <%= nameCamel %>Model: Model<<%= namePascal %>>;
   let <%= namePlural %>: <%= namePascal %>[] = [];

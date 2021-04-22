@@ -4,18 +4,18 @@ import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
 import { SortOrderEnum } from '@core/graphql/definitions';
 import { <%= namePascal %>SearchArgs, <%= namePascal %>SearchDto } from '../../src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
-import { FRAGMENT_RESPONSE_SCENE_MANAGER } from './fragments';
+import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
 const QUERY_SEARCH = gql`
-  query search<%= namePascal %>Manager($params: <%= namePascal %>SearchInput!) {
-    <%= namePlural %>Manger(params: $params) {
+  query search<%= namePascal %>($params: <%= namePascal %>SearchInput!) {
+    <%= namePlural %>(params: $params) {
       ...<%= namePascal %>ResultFrag
     }
   }
-  ${FRAGMENT_RESPONSE_SCENE_MANAGER}
+  ${FRAGMENT_RESPONSE_<%= nameUp %>}
 `;
 
-describe('GraphQl search <%= namePascal %> Manager (e2e)', () => {
+describe('GraphQl search <%= namePascal %>  (e2e)', () => {
   let app: GraphqlTestSuite;
   let <%= nameCamel %>Model: Model<<%= namePascal %>>;
   let <%= namePlural %>: <%= namePascal %>[] = [];
@@ -71,8 +71,7 @@ describe('GraphQl search <%= namePascal %> Manager (e2e)', () => {
     response
       .assertNoErrors()
       .assertCount(1, 'edges')
-      .assertPropertyVal(<%= namePlural %>[1].name, 'edges.0.name')
-      .assertPropertyVal(`<%= nameCamel %>:${<%= namePlural %>[1].slug}`, 'edges.0.cacheKey');
+      .assertPropertyVal(<%= namePlural %>[1].name, 'edges.0.name');
   });
 
   it('search > AND enable=true', async () => {

@@ -1,13 +1,11 @@
 import { gql } from 'apollo-server';
 
-export const FRAGMENT_SCENE_MANAGER = gql`
-  fragment <%= namePascal %>ManagerFrag on <%= namePascal %>Manager {
+export const FRAGMENT_<%= nameUp %> = gql`
+  fragment <%= namePascal %>Frag on <%= namePascal %> {
     _id
     name
     slug
     position
-    thumb
-    cacheKey
     enable
     createdAt {
       iso
@@ -18,11 +16,11 @@ export const FRAGMENT_SCENE_MANAGER = gql`
   }
 `;
 
-export const FRAGMENT_RESPONSE_SCENE_MANAGER = gql`
+export const FRAGMENT_RESPONSE_<%= nameUp %> = gql`
   fragment <%= namePascal %>ResultFrag on <%= namePascal %>Response {
     message
     edges {
-      ...<%= namePascal %>ManagerFrag
+      ...<%= namePascal %>Frag
     }
     pagination {
       lastPage
@@ -31,5 +29,5 @@ export const FRAGMENT_RESPONSE_SCENE_MANAGER = gql`
       total
     }
   }
-  ${FRAGMENT_SCENE_MANAGER}
+  ${FRAGMENT_<%= nameUp %>}
 `;

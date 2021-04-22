@@ -26,6 +26,6 @@ export class <%= namePascal %>RemovedHandler implements IEventHandler<<%= namePa
       .withProperty('dto', filter)
       .withProperty('model', model.toJSON())
       .contextIn(<%= namePascal %>RemovedHandler.name)
-      .log('<%= name %> removido: :subject.name');
+      .log('Cenário removido: :subject.name');
   }
 }

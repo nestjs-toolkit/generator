@@ -1,0 +1,9 @@
+import { CreateMany<%= namePascal %>Handler } from './create-many-<%= nameCamel %>.handler';
+import { RemoveMany<%= namePascal %>Handler } from './remove-many-<%= nameCamel %>.handler';
+import { UpdateMany<%= namePascal %>Handler } from './update-many-<%= nameCamel %>.handler';
+
+export const CommandHandlers = [
+  CreateMany<%= namePascal %>Handler,
+  RemoveMany<%= namePascal %>Handler,
+  UpdateMany<%= namePascal %>Handler,
+];

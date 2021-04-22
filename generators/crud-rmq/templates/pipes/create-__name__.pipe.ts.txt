@@ -1,0 +1,20 @@
+import Joi, { ObjectSchema } from 'joi';
+import { Injectable } from '@nestjs/common';
+import { <%= namePascal %>CreateArgs } from '../dto';
+import { Base<%= namePascal %>Pipe } from './base-<%= nameCamel %>.pipe';
+
+@Injectable()
+export class Create<%= namePascal %>Pipe extends Base<%= namePascal %>Pipe<<%= namePascal %>CreateArgs> {
+  rules(): ObjectSchema {
+    const dto = Joi.object().keys({
+      name: Joi.string().min(3).max(200).required(),
+      slug: Joi.string().hostname().min(3).max(200).required(),
+      position: Joi.number().required(),
+      enable: Joi.boolean().required(),
+    });
+
+    return Joi.object({
+      rows: Joi.array().items(dto).min(1).required(),
+    }).required();
+  }
+}

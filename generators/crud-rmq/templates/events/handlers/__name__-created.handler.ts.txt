@@ -26,6 +26,6 @@ export class <%= namePascal %>CreatedHandler implements IEventHandler<<%= namePa
       .withProperty('dto', dto)
       .withProperty('model', model.toJSON())
       .contextIn(<%= namePascal %>CreatedHandler.name)
-      .log('Cadastrado <%= name %>: :subject.name');
+      .log('Cadastrado um cenário: :subject.name');
   }
 }

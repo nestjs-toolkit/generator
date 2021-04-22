@@ -52,8 +52,6 @@ export class UpdateMany<%= namePascal %>Handler
     dto: <%= namePascal %>UpdateDto,
     context: ContextType,
   ) {
-    const old = model.toJSON();
-
     try {
       model.set(dto);
       await model.save();
@@ -71,6 +69,7 @@ export class UpdateMany<%= namePascal %>Handler
       return null;
     }
 
+    const old = model.toJSON();
     this.eventBus.publish(new <%= namePascal %>UpdatedEvent(model, old, dto, context));
 
     return model;

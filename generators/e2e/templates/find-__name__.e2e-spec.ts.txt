@@ -3,18 +3,18 @@ import { gql } from 'apollo-server';
 import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
 import { <%= namePascal %>FindArgs } from '../../src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
-import { FRAGMENT_SCENE_MANAGER } from './fragments';
+import { FRAGMENT_<%= nameUp %> } from './fragments';
 
 const QUERY_FIND = gql`
-  query find<%= namePascal %>Manager($id: String!) {
-    <%= nameCamel %>Manger(id: $id) {
-      ...<%= namePascal %>ManagerFrag
+  query find<%= namePascal %>($id: ID!) {
+    <%= nameCamel %>(id: $id) {
+      ...<%= namePascal %>Frag
     }
   }
-  ${FRAGMENT_SCENE_MANAGER}
+  ${FRAGMENT_<%= nameUp %>}
 `;
 
-describe('GraphQl find <%= namePascal %> Manager (e2e)', () => {
+describe('GraphQl find <%= namePascal %>  (e2e)', () => {
   let app: GraphqlTestSuite;
   let <%= nameCamel %>Model: Model<<%= namePascal %>>;
   let <%= nameCamel %>: <%= namePascal %>;
@@ -47,8 +47,7 @@ describe('GraphQl find <%= namePascal %> Manager (e2e)', () => {
 
     response
       .assertNoErrors()
-      .assertPropertyVal(<%= nameCamel %>.name, 'name')
-      .assertPropertyVal(`<%= nameCamel %>:${<%= nameCamel %>.slug}`, 'cacheKey');
+      .assertPropertyVal(<%= nameCamel %>.name, 'name');
   });
 
   it('find > not found', async () => {

@@ -1,0 +1,1 @@
+export { <%= namePluralPascal %>Module } from './<%= namePlural %>.module';
