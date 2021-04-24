@@ -1,1 +1,0 @@
-export { <%= namePascal %>, <%= namePascal %>Schema } from './<%= nameCamel %>.schema';

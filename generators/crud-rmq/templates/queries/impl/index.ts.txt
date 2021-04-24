@@ -1,2 +1,0 @@
-export { Find<%= namePascal %>Query } from './find-<%= nameCamel %>.query';
-export { Search<%= namePluralPascal %>Query } from './search-<%= namePlural %>.query';

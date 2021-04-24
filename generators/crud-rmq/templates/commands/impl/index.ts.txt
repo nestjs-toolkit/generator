@@ -1,3 +1,0 @@
-export { CreateMany<%= namePascal %>Command } from './create-many-<%= nameCamel %>.command';
-export { RemoveMany<%= namePascal %>Command } from './remove-many-<%= nameCamel %>.command';
-export { UpdateMany<%= namePascal %>Command } from './update-many-<%= nameCamel %>.command';

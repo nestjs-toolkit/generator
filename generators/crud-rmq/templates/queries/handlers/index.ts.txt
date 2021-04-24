@@ -1,7 +1,0 @@
-import { Find<%= namePascal %>Handler } from './find-<%= nameCamel %>.handler';
-import { Search<%= namePluralPascal %>Handler } from './search-<%= namePlural %>.handler';
-
-export const QueryHandlers = [
-  Find<%= namePascal %>Handler,
-  Search<%= namePluralPascal %>Handler
-];

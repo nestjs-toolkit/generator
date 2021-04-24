@@ -1,2 +1,0 @@
-export { <%= namePluralPascal %>UserResolver } from './<%= namePlural %>-user.resolver';
-export { <%= namePluralPascal %>ManagerResolver } from './<%= namePlural %>-manager.resolver';

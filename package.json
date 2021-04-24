@@ -12,6 +12,10 @@
     "generators"
   ],
   "main": "generators/index.js",
+  "scripts": {
+    "pretest": "eslint .",
+    "test": "jest"
+  },
   "keywords": [
     "nestjs",
     "yeoman-generator"
@@ -73,10 +77,6 @@
     "plugins": [
       "prettier"
     ]
-  },
-  "scripts": {
-    "pretest": "eslint .",
-    "test": "jest"
   },
   "repository": "@nestjs-toolkit/generator-nestjs-gen",
   "license": "MIT"

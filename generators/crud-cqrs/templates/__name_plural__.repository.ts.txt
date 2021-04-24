@@ -55,7 +55,7 @@ export class <%= namePluralPascal %>Repository extends BaseRepository<<%= namePa
   async hasNameOrSlug(names: string[], slugs: string[]): Promise<Maybe<%= namePascal %>> {
     return this.model.findOne({
       $or: [{ name: { $in: names } }, { slug: { $in: slugs } }],
-    }) as any;
+    }).exec();
   }
 
   async save(dto: <%= namePascal %>CreateDto): Promise<<%= namePascal %>> {
@@ -72,7 +72,7 @@ export class <%= namePluralPascal %>Repository extends BaseRepository<<%= namePa
     const { forceAll, ids } = filter;
 
     if (forceAll) {
-      return this.model.find() as any;
+      return this.model.find().exec();
     }
 
     return this.findByIds(ids);
