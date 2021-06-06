@@ -1,6 +1,14 @@
 # generator-nestjs-gen [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
 > nestjs tools gen
 
+## Commands
+
+```shell
+yo nestjs-gen:cqrs-command note -p src
+yo nestjs-gen:crud-cqrs note -p src
+yo nestjs-gen:e2e note -p test
+```
+
 ## Installation
 
 First, install [Yeoman](http://yeoman.io) and generator-nestjs-gen using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).

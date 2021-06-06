@@ -1,0 +1,5 @@
+import { <%= namePascal %>Handler } from './<%= name %>.handler';
+
+export const QueryHandlers = [
+  <%= namePascal %>Handler
+];

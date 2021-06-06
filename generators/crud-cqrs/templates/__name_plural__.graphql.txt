@@ -28,7 +28,7 @@ input <%= namePascal %>CreateInput {
 }
 
 input <%= namePascal %>FilterInput {
-    ids: [ID!]!
+    ids: [ID]!
     forceAll: Boolean
 }
 
@@ -41,7 +41,7 @@ input <%= namePascal %>UpdateDataInput {
 
 type <%= namePascal %>Response {
     message: String
-    edges: [<%= namePascal %>]!
+    edges: [<%= namePascal %>!]!
     pagination: Pagination
 }
 

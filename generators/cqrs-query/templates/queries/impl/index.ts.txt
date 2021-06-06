@@ -1,0 +1,1 @@
+export { <%= namePascal %>Query } from './<%= name %>.query';

@@ -1,5 +1,6 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+
 
 @Schema({ collection: 'app_<%= namePlural %>', timestamps: true })
 export class <%= namePascal %> extends Document {

@@ -19,7 +19,7 @@ export class <%= namePluralPascal %>Repository extends BaseRepository<<%= namePa
     super(model);
   }
 
-  async search(
+  search(
     payload: <%= namePascal %>SearchDto,
     projection?: any,
   ): Promise<ResultSearch> {
@@ -52,23 +52,19 @@ export class <%= namePluralPascal %>Repository extends BaseRepository<<%= namePa
     return this.execWithPagination(conditions, projection, sort, perPage, page);
   }
 
-  async hasNameOrSlug(names: string[], slugs: string[]): Promise<Maybe<%= namePascal %>> {
+  hasNameOrSlug(names: string[], slugs: string[]): Promise<Maybe<%= namePascal %>> {
     return this.model.findOne({
       $or: [{ name: { $in: names } }, { slug: { $in: slugs } }],
     }).exec();
   }
 
-  async save(dto: <%= namePascal %>CreateDto): Promise<<%= namePascal %>> {
-    const <%= nameCamel %>: <%= namePascal %> = new this.model({
-      name: dto.name,
-      slug: dto.slug, // TODO: make slug
-      enable: dto.enable
+  save(dto: <%= namePascal %>CreateDto): Promise<<%= namePascal %>> {
+    return this.model.create({
+      ...dto
     });
-
-    return <%= nameCamel %>.save();
   }
 
-  async findByFilters(filter: <%= namePascal %>FilterInput): Promise<<%= namePascal %>[]> {
+  findByFilters(filter: <%= namePascal %>FilterInput): Promise<<%= namePascal %>[]> {
     const { forceAll, ids } = filter;
 
     if (forceAll) {

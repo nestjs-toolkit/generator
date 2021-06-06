@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { gql } from 'apollo-server';
 import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
-import { <%= namePascal %>CreateArgs, <%= namePascal %>CreateDto } from '../../src/<%= namePlural %>/dto';
+import { <%= namePascal %>CreateArgs, <%= namePascal %>CreateDto } from 'src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
 import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
@@ -32,7 +32,7 @@ describe('GraphQl create <%= namePascal %> (e2e)', () => {
     app = new GraphqlTestSuite();
     await app.init();
 
-    app.mockKeyCloak();
+    app.mockeryKeycloak();
 
     <%= nameCamel %>Model = app.get('<%= namePascal %>Model');
 

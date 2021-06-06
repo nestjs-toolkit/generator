@@ -1,0 +1,1 @@
+export { <%= namePascal %>Command } from './<%= name %>.command';

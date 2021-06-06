@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { gql } from 'apollo-server';
 import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
-import { <%= namePascal %>FindArgs } from '../../src/<%= namePlural %>/dto';
+import { <%= namePascal %>FindArgs } from 'src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
 import { FRAGMENT_<%= nameUp %> } from './fragments';
 
@@ -23,7 +23,7 @@ describe('GraphQl find <%= namePascal %>  (e2e)', () => {
     app = new GraphqlTestSuite();
     await app.init();
 
-    app.mockKeyCloak();
+    app.mockeryKeycloak();
 
     <%= nameCamel %>Model = app.get('<%= namePascal %>Model');
 

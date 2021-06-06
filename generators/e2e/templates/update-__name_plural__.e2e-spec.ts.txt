@@ -1,13 +1,13 @@
-import { gql } from 'apollo-server';
 import { Model } from 'mongoose';
+import { gql } from 'apollo-server';
 import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
-import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
-import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 import {
   <%= namePascal %>UpdateDto,
   <%= namePascal %>UpdateArgs,
   <%= namePascal %>FilterDto,
-} from '../../src/<%= namePlural %>/dto';
+} from 'src/<%= namePlural %>/dto';
+import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
+import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
 const MUTATION_UPDATE = gql`
   mutation update<%= namePascal %>(
@@ -30,7 +30,7 @@ describe('GraphQl update <%= namePascal %> (e2e)', () => {
     app = new GraphqlTestSuite();
     await app.init();
 
-    app.mockKeyCloak();
+    app.mockeryKeycloak();
 
     <%= nameCamel %>Model = app.get('<%= namePascal %>Model');
   });

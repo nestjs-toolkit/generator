@@ -1,13 +1,13 @@
 import { Model } from 'mongoose';
 import { gql } from 'apollo-server';
-import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
 import { SortOrderEnum } from '@core/graphql/definitions';
-import { <%= namePascal %>SearchArgs, <%= namePascal %>SearchDto } from '../../src/<%= namePlural %>/dto';
+import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
+import { <%= namePascal %>SearchArgs, <%= namePascal %>SearchDto } from 'src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
 import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
 const QUERY_SEARCH = gql`
-  query search<%= namePascal %>($params: <%= namePascal %>SearchInput!) {
+  query search<%= namePascal %>($params: <%= namePascal %>SearchInput) {
     <%= namePlural %>(params: $params) {
       ...<%= namePascal %>ResultFrag
     }
@@ -24,7 +24,7 @@ describe('GraphQl search <%= namePascal %>  (e2e)', () => {
     app = new GraphqlTestSuite();
     await app.init();
 
-    app.mockKeyCloak();
+    app.mockeryKeycloak();
 
     <%= nameCamel %>Model = app.get('<%= namePascal %>Model');
 
@@ -57,6 +57,14 @@ describe('GraphQl search <%= namePascal %>  (e2e)', () => {
 
   afterAll(async () => {
     await app.close();
+  });
+
+  it('search > all', async () => {
+    const response = await app.gql
+      .authorization()
+      .request<<%= namePascal %>SearchArgs>(QUERY_SEARCH);
+
+    response.assertNoErrors().assertCount(3, 'edges');
   });
 
   it('search > q=fo', async () => {
