@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document , SchemaTypes} from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 
@@ -10,14 +10,8 @@ export class <%= namePascal %> extends Document {
   @Prop({ unique: true, required: true })
   slug: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: SchemaTypes.Boolean })
   enable: boolean;
-
-  @Prop({ required: true })
-  thumb: string;
-
-  @Prop({ required: true })
-  position: number;
 
   createdAt: string;
 

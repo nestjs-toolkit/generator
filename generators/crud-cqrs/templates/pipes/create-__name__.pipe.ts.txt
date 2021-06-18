@@ -9,7 +9,6 @@ export class Create<%= namePascal %>Pipe extends Base<%= namePascal %>Pipe<<%= n
     const dto = Joi.object().keys({
       name: Joi.string().min(3).max(200).required(),
       slug: Joi.string().hostname().min(3).max(200).required(),
-      position: Joi.number().required(),
       enable: Joi.boolean().required(),
     });
 

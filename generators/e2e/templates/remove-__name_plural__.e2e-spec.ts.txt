@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { gql } from 'apollo-server';
-import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
-import { <%= namePascal %>FilterDto, <%= namePascal %>RemoveArgs } from 'src/<%= namePlural %>/dto';
+import { <%= namePascal %> } from '../../src/<%= namePlural %>/schemas';
+import { <%= namePascal %>FilterDto, <%= namePascal %>RemoveArgs } from '../../src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
 import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
@@ -40,21 +40,17 @@ describe('GraphQl remove <%= namePascal %> (e2e)', () => {
     <%= namePlural %>[0] = await new <%= nameCamel %>Model({
       name: 'Demo-0',
       slug: 'demo-0',
-      thumb: 'demo.jpg',
-      position: 1,
       enable: true,
     }).save();
 
     <%= namePlural %>[1] = await new <%= nameCamel %>Model({
       name: 'Demo-1',
       slug: 'demo-1',
-      thumb: 'demo.jpg',
-      position: 1,
       enable: true,
     }).save();
   });
 
-  it('create > invalid args', async () => {
+  it('remove > invalid args', async () => {
     const filter: <%= namePascal %>FilterDto = {
       ids: [],
       forceAll: false,
@@ -67,7 +63,7 @@ describe('GraphQl remove <%= namePascal %> (e2e)', () => {
     response.expectedFailedInputValidation('filter.ids', 'array.min');
   });
 
-  it('create > remove all success', async () => {
+  it('remove > remove all success', async () => {
     const filter: <%= namePascal %>FilterDto = {
       ids: [],
       forceAll: true,
@@ -87,7 +83,7 @@ describe('GraphQl remove <%= namePascal %> (e2e)', () => {
     expect(has).toBe(0);
   });
 
-  it('create > remove by ids success', async () => {
+  it('remove > remove by ids success', async () => {
     const filter: <%= namePascal %>FilterDto = {
       ids: [<%= namePlural %>[1]._id],
     };

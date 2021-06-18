@@ -10,7 +10,6 @@ export abstract class Base<%= namePascal %>Pipe<Args> extends BaseValidationPipe
   attributes(): Record<string, string> {
     return {
       name: 'nome',
-      position: 'ordem',
       enable: 'ativar',
     };
   }

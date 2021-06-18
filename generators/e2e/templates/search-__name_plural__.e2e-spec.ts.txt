@@ -1,8 +1,8 @@
 import { Model } from 'mongoose';
 import { gql } from 'apollo-server';
 import { SortOrderEnum } from '@core/graphql/definitions';
-import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
-import { <%= namePascal %>SearchArgs, <%= namePascal %>SearchDto } from 'src/<%= namePlural %>/dto';
+import { <%= namePascal %> } from '../../src/<%= namePlural %>/schemas';
+import { <%= namePascal %>SearchArgs, <%= namePascal %>SearchDto } from '../../src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
 import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
@@ -33,24 +33,18 @@ describe('GraphQl search <%= namePascal %>  (e2e)', () => {
     <%= namePlural %>[0] = await new <%= nameCamel %>Model({
       name: 'Demo',
       slug: 'demo',
-      thumb: 'demo.jpg',
-      position: 1,
       enable: false,
     }).save();
 
     <%= namePlural %>[1] = await new <%= nameCamel %>Model({
       name: 'Foo',
       slug: 'foo',
-      thumb: 'foo.jpg',
-      position: 2,
       enable: true,
     }).save();
 
     <%= namePlural %>[2] = await new <%= nameCamel %>Model({
       name: 'Bar',
       slug: 'bar',
-      thumb: 'bar.jpg',
-      position: 3,
       enable: true,
     }).save();
   });

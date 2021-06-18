@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { gql } from 'apollo-server';
-import { <%= namePascal %> } from 'src/<%= namePlural %>/schemas';
-import { <%= namePascal %>CreateArgs, <%= namePascal %>CreateDto } from 'src/<%= namePlural %>/dto';
+import { <%= namePascal %> } from '../../src/<%= namePlural %>/schemas';
+import { <%= namePascal %>CreateArgs, <%= namePascal %>CreateDto } from '../../src/<%= namePlural %>/dto';
 import { GraphqlTestSuite } from '../stub/helpers/graphql-test-suite';
 import { FRAGMENT_RESPONSE_<%= nameUp %> } from './fragments';
 
@@ -39,8 +39,6 @@ describe('GraphQl create <%= namePascal %> (e2e)', () => {
     <%= nameCamel %> = await new <%= nameCamel %>Model({
       name: 'Demo',
       slug: 'demo',
-      thumb: 'demo.jpg',
-      position: 1,
       enable: true,
     }).save();
   });
@@ -51,9 +49,8 @@ describe('GraphQl create <%= namePascal %> (e2e)', () => {
 
   it('create > single success', async () => {
     const row: <%= namePascal %>CreateDto = {
-      name: 'IOL demo 1',
-      slug: 'iol-demo-1',
-      position: 1,
+      name: 'Name demo 1',
+      slug: 'name-demo-1',
       enable: true,
     };
 
@@ -75,15 +72,13 @@ describe('GraphQl create <%= namePascal %> (e2e)', () => {
   it('create > many success', async () => {
     const rows: <%= namePascal %>CreateDto[] = [
       {
-        name: 'IOL demo 2',
-        slug: 'iol-demo-2',
-        position: 1,
+        name: 'Name demo 2',
+        slug: 'name-demo-2',
         enable: true,
       },
       {
-        name: 'IOL demo 3',
-        slug: 'iol-demo-3',
-        position: 2,
+        name: 'Name demo 3',
+        slug: 'name-demo-3',
         enable: true,
       },
     ];
@@ -111,7 +106,6 @@ describe('GraphQl create <%= namePascal %> (e2e)', () => {
       {
         name: 'a',
         slug: 'a-A 1',
-        position: 1,
         enable: true,
       },
     ];
@@ -133,15 +127,13 @@ describe('GraphQl create <%= namePascal %> (e2e)', () => {
   it('create > duplicated slug', async () => {
     const rows: <%= namePascal %>CreateDto[] = [
       {
-        name: 'IOL demo 2',
-        slug: 'iol-demo-2',
-        position: 1,
+        name: 'Name demo 2',
+        slug: 'name-demo-2',
         enable: true,
       },
       {
-        name: 'IOL demo 3',
+        name: 'Name demo 3',
         slug: <%= nameCamel %>.slug,
-        position: 2,
         enable: true,
       },
     ];
@@ -161,14 +153,12 @@ describe('GraphQl create <%= namePascal %> (e2e)', () => {
     const rows: <%= namePascal %>CreateDto[] = [
       {
         name: <%= nameCamel %>.name,
-        slug: 'iol-demo-22',
-        position: 1,
+        slug: 'name-demo-22',
         enable: true,
       },
       {
-        name: 'IOL demo 3',
+        name: 'Name demo 3',
         slug: 'old-154',
-        position: 2,
         enable: true,
       },
     ];
