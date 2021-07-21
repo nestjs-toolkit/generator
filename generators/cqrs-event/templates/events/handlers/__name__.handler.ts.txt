@@ -1,0 +1,12 @@
+import { Logger } from '@nestjs/common';
+import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+import { <%= namePascal %>Event } from '../impl';
+
+@EventsHandler(<%= namePascal %>Event)
+export class <%= namePascal %>Handler implements IEventHandler<<%= namePascal %>Event> {
+  private logger = new Logger(<%= namePascal %>Handler.name);  
+
+  handle({ dto }: <%= namePascal %>Event) {
+    this.logger.debug(`<%= namePascal %>: ${dto}`);    
+  }
+}

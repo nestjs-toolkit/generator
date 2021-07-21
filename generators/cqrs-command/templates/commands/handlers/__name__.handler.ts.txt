@@ -5,11 +5,11 @@ import { <%= namePascal %>Command } from '../impl';
 
 @CommandHandler(<%= namePascal %>Command)
 export class <%= namePascal %>Handler
-  implements ICommandHandler<<%= namePascal %>Command, <%= namePascal %>> {
+  implements ICommandHandler<<%= namePascal %>Command, void> {
   private logger = new Logger(<%= namePascal %>Handler.name);
 
 
-  async execute(command: <%= namePascal %>Command): Promise<<%= namePascal %>> {
+  execute(command: <%= namePascal %>Command): Promise<void> {
     this.logger.debug(clc.greenBright(`Init `));
   }
 }

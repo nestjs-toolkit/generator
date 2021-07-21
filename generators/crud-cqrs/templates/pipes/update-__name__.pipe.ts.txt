@@ -1,11 +1,11 @@
 import Joi, { ObjectSchema } from 'joi';
 import { Injectable } from '@nestjs/common';
-import { <%= namePascal %>RemoveArgs } from '../dto';
+import { <%= namePascal %>UpdateArgs } from '../dto';
 import { Base<%= namePascal %>Pipe } from './base-<%= nameCamel %>.pipe';
 
 @Injectable()
-export class Update<%= namePascal %>Pipe extends Base<%= namePascal %>Pipe<<%= namePascal %>RemoveArgs> {
-  rules(data: <%= namePascal %>RemoveArgs): ObjectSchema {
+export class Update<%= namePascal %>Pipe extends Base<%= namePascal %>Pipe<<%= namePascal %>UpdateArgs> {
+  rules(data: <%= namePascal %>UpdateArgs): ObjectSchema {
     const filter = this.makeFilterSchema(data.filter.forceAll);
 
     const input = Joi.object({

@@ -5,13 +5,13 @@ import { <%= namePascal %> } from '../../schemas';
 import { <%= namePascal %>Query } from '../impl';
 
 @QueryHandler(<%= namePascal %>Query)
-export class <%= namePascal %>Handler implements IQueryHandler<<%= namePascal %>Query, <%= namePascal %>> {
+export class <%= namePascal %>Handler implements IQueryHandler<<%= namePascal %>Query, any> {
   private logger = new Logger(<%= namePascal %>Handler.name);
 
   constructor(private readonly repository: <%= namePluralPascal %>Repository) {}
 
-  async execute({ id }: <%= namePascal %>Query): Promise<<%= namePascal %>> {
-    this.logger.debug(`<%= namePascal %>: ${id}`);
-    return this.repository.findOne(id);
+  execute({ dto }: <%= namePascal %>Query): Promise<any> {
+    this.logger.debug(`<%= namePascal %>: ${dto}`);
+    return this.repository.findOne(dto);
   }
 }
