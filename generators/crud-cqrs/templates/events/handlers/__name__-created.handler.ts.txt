@@ -11,7 +11,7 @@ export class <%= namePascal %>CreatedHandler implements IEventHandler<<%= namePa
     const { req, user } = context;
     const causer = {
       collection: 'user_keycloak',
-      username: user.username,
+      username: user.preferred_username,
       _id: user.sub,
     };
 
